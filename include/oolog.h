@@ -7,10 +7,6 @@ namespace oolog {
 
 typedef std::function<std::string(void)> LogFunction;
 
-class iLogger {
-	public:
-		virtual void PerformLog(LogFunction& logFunction) = 0;
-};
 
 enum class LogLevel {
 	none,
@@ -23,37 +19,37 @@ enum class LogLevel {
 };
 
 
+
+class iLogger {
+	public:
+		virtual void PerformLog(LogFunction&, LogLevel) = 0;
+};
+
+
+
 class Log : private iLogger {
 	public:
-		Log(LogLevel minLogLevel) : minLevelAllowed(minLogLevel) { }
-		virtual ~Log() { }
+		Log(LogLevel minLogLevel);
+		virtual ~Log();
 
-		virtual void Debug(LogFunction logFunction) {
-			LogIfEnoughLevel(logFunction, LogLevel::debug);
-		}
-
-		virtual void Verbose(LogFunction logFunction) {
-			LogIfEnoughLevel(logFunction, LogLevel::verbose);
-		}
+		void Fatal(LogFunction);
+		void Error(LogFunction);
+		void Warning(LogFunction logFunction);
+		void Info(LogFunction logFunction);
+		void Debug(LogFunction logFunction);
+		void Verbose(LogFunction logFunction);
 		
 	private:
 		LogLevel minLevelAllowed;
 
-		void LogIfEnoughLevel(LogFunction& logFunction, LogLevel logLevel) {
-			if(logLevel <= minLevelAllowed) {
-				PerformLog(logFunction);
-			}
-		}
+		void LogIfEnoughLevel(LogFunction& logFunction, LogLevel logLevel);
 };
 
 class ConsoleLog : public Log {
 	public:
-		ConsoleLog(LogLevel logLevel) : Log(logLevel) { }
+		ConsoleLog(LogLevel logLevel);
 	private:
-		virtual void PerformLog(std::function<std::string(void)>& logFunction) {
-			std::string textToLog = logFunction();
-			std::cout << textToLog << std::endl;
-		}
+		virtual void PerformLog(LogFunction&, LogLevel);
 };
 
 }
