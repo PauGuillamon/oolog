@@ -61,7 +61,7 @@ void ConsoleLog::PerformLog(std::string& textToLog, LogLevel logLevel) {
             std::cout << "V: ";
             break;
     }
-	std::string textToLog = logFunction();
+    
 	std::cout << textToLog << std::endl;
 }
 

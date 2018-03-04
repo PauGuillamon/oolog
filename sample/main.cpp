@@ -9,7 +9,8 @@ void ComplexOperation(oolog::Log& myLog) {
 }
 
 int main(){
-	oolog::ConsoleLog mylogger(oolog::LogLevel::verbose);
+	//oolog::ConsoleLog mylogger(oolog::LogLevel::verbose);
+    oolog::ColoredLog mylogger(std::make_shared<oolog::ConsoleLog>(oolog::LogLevel::verbose), oolog::LogLevel::verbose);
 
 	mylogger.Debug([](){ return "App has started!"; });
 	mylogger.Verbose([](){ return "hello world from oolog!"; });

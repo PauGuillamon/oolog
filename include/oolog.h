@@ -28,7 +28,8 @@ class iLogger {
 };
 
 
-class Log : private iLogger {
+// TODO: I don't want iLogger to be pulic, but it's needed right to allow Decorator Pattern.
+class Log : public iLogger {
 	public:
 		Log(LogLevel minLogLevel);
 		virtual ~Log();
@@ -54,9 +55,9 @@ class ConsoleLog : public Log {
 		virtual void PerformLog(std::string&, LogLevel);
 };
 
-class ColoredConsoleLog : public Log {
+class ColoredLog : public Log {
 public:
-    ColoredConsoleLog(std::shared_ptr<Log> origin, LogLevel logLevel)
+    ColoredLog(std::shared_ptr<Log> origin, LogLevel logLevel)
         : Log(logLevel),
         originLog(std::move(origin))
     {
@@ -67,20 +68,22 @@ private:
     std::shared_ptr<Log> originLog;
     
     virtual void PerformLog(std::string& textToLog, LogLevel logLevel) {
+        std::cout << "\033[1;";
         switch(logLevel) {
             case LogLevel::warning:
-                std::cout << "\033[36m";
+                std::cout << "36m";
                 break;
                 
             case LogLevel::debug:
-                std::cout << "\031[31m";
+                std::cout << "33m";
                 break;
                 
             case LogLevel::verbose:
-                std::cout << "\034[36m";
+                std::cout << "34m";
                 break;
         }
-        originLog.PerformLog(textToLog, logLevel);
+        originLog.get()->PerformLog(textToLog, logLevel);
+        std::cout << "\033[0m";
     }
 };
 
