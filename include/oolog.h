@@ -90,6 +90,7 @@ class ColoredLogPrinter : public LogPrinter {
         std::shared_ptr<LogPrinter> originLogPrinter;
         
         virtual void PrintLog(std::string& textToLog, LogLevel logLevel) {
+            // https://stackoverflow.com/questions/2616906/how-do-i-output-coloured-text-to-a-linux-terminal
             std::cout << "\033[1;";
             switch(logLevel) {
                 case LogLevel::fatal:
