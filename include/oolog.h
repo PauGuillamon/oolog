@@ -22,16 +22,17 @@ enum class LogLevel {
 };
 
 
-class iLogger {
+
+class LogPrinter {
 	public:
-		virtual void PerformLog(std::string&, LogLevel) = 0;
+		virtual void PrintLog(std::string&, LogLevel) = 0;
 };
 
 
-// TODO: I don't want iLogger to be pulic, but it's needed right to allow Decorator Pattern.
-class Log : public iLogger {
+
+class Log {
 	public:
-		Log(LogLevel minLogLevel);
+		Log(std::shared_ptr<LogPrinter> logPrinter, LogLevel minLogLevel);
 		virtual ~Log();
 
 		void Fatal(LogFunction);
@@ -42,53 +43,88 @@ class Log : public iLogger {
 		void Verbose(LogFunction logFunction);
 		
 	private:
+                std::shared_ptr<LogPrinter> printer;
 		LogLevel minLevelAllowed;
 
 		void LogIfEnoughLevel(LogFunction& logFunction, LogLevel logLevel);
 };
 
 
-class ConsoleLog : public Log {
-	public:
-		ConsoleLog(LogLevel logLevel);
-	private:
-		virtual void PerformLog(std::string&, LogLevel);
+
+class ConsoleLogPrinter : public LogPrinter {
+    public:
+        ConsoleLogPrinter();
+    private:
+        virtual void PrintLog(std::string&, LogLevel);
 };
 
-class ColoredLog : public Log {
-public:
-    ColoredLog(std::shared_ptr<Log> origin, LogLevel logLevel)
-        : Log(logLevel),
-        originLog(std::move(origin))
-    {
-        // Empty
-    }
-    
-private:
-    std::shared_ptr<Log> originLog;
-    
-    virtual void PerformLog(std::string& textToLog, LogLevel logLevel) {
-        std::cout << "\033[1;";
-        switch(logLevel) {
-            case LogLevel::warning:
-                std::cout << "36m";
-                break;
-                
-            case LogLevel::debug:
-                std::cout << "33m";
-                break;
-                
-            case LogLevel::verbose:
-                std::cout << "34m";
-                break;
+
+
+class EndlLogPrinter : public LogPrinter {
+    public:
+        EndlLogPrinter(std::shared_ptr<LogPrinter> origin) : 
+            originLogPrinter(std::move(origin))
+        {
+            // Empty
         }
-        originLog.get()->PerformLog(textToLog, logLevel);
-        std::cout << "\033[0m";
-    }
+    private:
+        std::shared_ptr<LogPrinter> originLogPrinter;
+        
+        virtual void PrintLog(std::string& textToLog, LogLevel logLevel) {
+            originLogPrinter.get()->PrintLog(textToLog, logLevel);
+            std::cout << std::endl;
+        }
 };
 
 
-}
+
+class ColoredLogPrinter : public LogPrinter {
+    public:
+        ColoredLogPrinter(std::shared_ptr<LogPrinter> origin) : 
+            originLogPrinter(std::move(origin))
+        {
+            // Empty
+        }
+        
+    private:
+        std::shared_ptr<LogPrinter> originLogPrinter;
+        
+        virtual void PrintLog(std::string& textToLog, LogLevel logLevel) {
+            std::cout << "\033[1;";
+            switch(logLevel) {
+                case LogLevel::fatal:
+                    std::cout << "31m";
+                    break;
+                    
+                case LogLevel::error:
+                    std::cout << "36m";
+                    break;
+                    
+                case LogLevel::warning:
+                    std::cout << "35m";
+                    break;
+                    
+                case LogLevel::info:
+                    std::cout << "34m";
+                    break;
+                    
+                case LogLevel::debug:
+                    std::cout << "31m";
+                    break;
+                    
+                case LogLevel::verbose:
+                    std::cout << "30m";
+                    break;
+            }
+            
+            originLogPrinter.get()->PrintLog(textToLog, logLevel);
+            std::cout << "\033[0m";
+        }
+};
+
+
+
+} // namespace oolog
 
 #endif // OOLOG_H_
 

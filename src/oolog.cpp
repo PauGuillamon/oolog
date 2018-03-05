@@ -6,7 +6,10 @@ namespace oolog {
 
 
     
-Log::Log(LogLevel minLogLevel) : minLevelAllowed(minLogLevel) {
+Log::Log(std::shared_ptr<LogPrinter> logPrinter, LogLevel minLogLevel) :
+    printer(std::move(logPrinter)),
+    minLevelAllowed(minLogLevel)
+{
     // Empty
 }
 
@@ -14,6 +17,30 @@ Log::Log(LogLevel minLogLevel) : minLevelAllowed(minLogLevel) {
 
 Log::~Log() {
     // Empty
+}
+
+
+
+void Log::Fatal(LogFunction logFunction) {
+	LogIfEnoughLevel(logFunction, LogLevel::debug);
+}
+
+
+
+void Log::Error(LogFunction logFunction) {
+	LogIfEnoughLevel(logFunction, LogLevel::debug);
+}
+
+
+
+void Log::Warning(LogFunction logFunction) {
+	LogIfEnoughLevel(logFunction, LogLevel::debug);
+}
+
+
+
+void Log::Info(LogFunction logFunction) {
+	LogIfEnoughLevel(logFunction, LogLevel::debug);
 }
 
 
@@ -32,8 +59,8 @@ void Log::Verbose(LogFunction logFunction) {
 
 void Log::LogIfEnoughLevel(LogFunction& logFunction, LogLevel logLevel) {
 	if(logLevel <= minLevelAllowed) {
-        std::string textToLog = logFunction();
-		PerformLog(textToLog, logLevel);
+            std::string textToLog = logFunction();
+            printer.get()->PrintLog(textToLog, logLevel);
 	}
 }
 
@@ -41,13 +68,13 @@ void Log::LogIfEnoughLevel(LogFunction& logFunction, LogLevel logLevel) {
 
 
 
-ConsoleLog::ConsoleLog(LogLevel logLevel) : Log(logLevel) {
+ConsoleLogPrinter::ConsoleLogPrinter()  {
 	// Empty
 }
 
 
 
-void ConsoleLog::PerformLog(std::string& textToLog, LogLevel logLevel) {
+void ConsoleLogPrinter::PrintLog(std::string& textToLog, LogLevel logLevel) {
     switch(logLevel) {
         case LogLevel::warning:
             std::cout << "W: ";
@@ -62,7 +89,7 @@ void ConsoleLog::PerformLog(std::string& textToLog, LogLevel logLevel) {
             break;
     }
     
-	std::cout << textToLog << std::endl;
+	std::cout << textToLog;// << std::endl;
 }
 
 

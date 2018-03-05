@@ -5,20 +5,26 @@
 
 
 void ComplexOperation(oolog::Log& myLog) {
-	myLog.Verbose([](){ return "Complex operation competed"; });
+    myLog.Error([](){ return "Complex operation detected error: "; });
+    myLog.Verbose([](){ return "Complex operation competed"; });
 }
 
 int main(){
-	//oolog::ConsoleLog mylogger(oolog::LogLevel::verbose);
-    oolog::ColoredLog mylogger(std::make_shared<oolog::ConsoleLog>(oolog::LogLevel::verbose), oolog::LogLevel::verbose);
+    std::shared_ptr<oolog::LogPrinter> logPrinter = 
+        std::make_shared<oolog::EndlLogPrinter>(
+        std::make_shared<oolog::ColoredLogPrinter>(
+        std::make_shared<oolog::ConsoleLogPrinter>()));
+    
+    oolog::Log mylogger(logPrinter, oolog::LogLevel::verbose);
 
-	mylogger.Debug([](){ return "App has started!"; });
-	mylogger.Verbose([](){ return "hello world from oolog!"; });
+    mylogger.Debug([](){ return "App has started!"; });
+    mylogger.Verbose([](){ return "hello world from oolog!"; });
 
-	ComplexOperation(mylogger);
+    ComplexOperation(mylogger);
 
-	mylogger.Debug([](){return "Closing app..."; });
+    mylogger.Debug([](){return "Closing app..."; });
 
-	return 0;
+
+    return 0;
 }
 
