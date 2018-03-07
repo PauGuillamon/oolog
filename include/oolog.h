@@ -35,12 +35,12 @@ class Log {
 		Log(std::shared_ptr<LogPrinter> logPrinter, LogLevel minLogLevel);
 		virtual ~Log();
 
-		void Fatal(LogFunction);
+                void Fatal(LogFunction);
 		void Error(LogFunction);
-		void Warning(LogFunction logFunction);
-		void Info(LogFunction logFunction);
-		void Debug(LogFunction logFunction);
-		void Verbose(LogFunction logFunction);
+		void Warning(LogFunction);
+		void Info(LogFunction);
+		void Debug(LogFunction);
+		void Verbose(LogFunction);
 		
 	private:
                 std::shared_ptr<LogPrinter> printer;

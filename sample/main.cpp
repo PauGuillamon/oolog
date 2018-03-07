@@ -2,12 +2,22 @@
 #include "../include/oolog.h"
 
 #include <iostream>
-
+#include <sstream>
 
 void ComplexOperation(oolog::Log& myLog) {
     myLog.Error([](){ return "Complex operation detected error: "; });
     myLog.Verbose([](){ return "Complex operation competed"; });
 }
+
+
+
+void TestOstream(std::function<void(std::ostringstream& log)> function){
+    std::ostringstream outStream;
+    function(outStream);
+    std::cout << "OutStream says: \"" << outStream.str() << "\"" << std::endl;
+}
+
+
 
 int main(){
     std::shared_ptr<oolog::LogPrinter> logPrinter = 
@@ -25,6 +35,8 @@ int main(){
     mylogger.Debug([](){return "Closing app..."; });
 
 
+    TestOstream([](std::ostringstream& log) {log << "myLog!"; });
+    
     return 0;
 }
 
