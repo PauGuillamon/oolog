@@ -7,8 +7,9 @@
 
 namespace oolog {
 
-
-typedef std::function<std::string(void)> LogFunction;
+typedef std::ostringstream stream;
+typedef stream& out;
+typedef std::function<void(out)> LogFunction;
 
 
 enum class LogLevel {

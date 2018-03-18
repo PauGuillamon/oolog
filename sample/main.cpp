@@ -5,17 +5,18 @@
 #include <sstream>
 
 void ComplexOperation(oolog::Log& myLog) {
-    myLog.Error([](){ return "Complex operation detected error: "; });
-    myLog.Verbose([](){ return "Complex operation competed"; });
+    myLog.Debug([](oolog::out log){ log << "Starting Complex Operation------------"; });
+    myLog.Verbose([](oolog::out log){ log << "preparing values...."; });
+    myLog.Info([](oolog::out log){ log << "Starting"; });
+    myLog.Warning([](oolog::out log){ log << "Some values are out of bound."; });
+    myLog.Error([](oolog::out log){ log << "Complex operation detected error: " << 3; });
+    myLog.Fatal([](oolog::out log){ log << "Couldn't recover after error. Cancelling operation"; });
+    myLog.Info([](oolog::out log){ log << "Operation failed"; });
+    myLog.Verbose([](oolog::out log){ log << "preparing to exit"; });
+    myLog.Debug([](oolog::out log){ log << "Exiting complex Operation------------"; });
 }
 
 
-
-void TestOstream(std::function<void(std::ostringstream& log)> function){
-    std::ostringstream outStream;
-    function(outStream);
-    std::cout << "OutStream says: \"" << outStream.str() << "\"" << std::endl;
-}
 
 
 
@@ -27,16 +28,13 @@ int main(){
     
     oolog::Log mylogger(logPrinter, oolog::LogLevel::verbose);
 
-    mylogger.Debug([](){ return "App has started!"; });
-    mylogger.Verbose([](){ return "hello world from oolog!"; });
+    mylogger.Info([](oolog::out log){ log << "App has started!"; });
+    mylogger.Verbose([](oolog::out log){ log << "hello world from oolog!"; });
 
     ComplexOperation(mylogger);
 
-    mylogger.Debug([](){return "Closing app..."; });
-
-
-    TestOstream([](std::ostringstream& log) {log << "myLog!"; });
     
+    mylogger.Info([](oolog::out log){ log << "Closing app..."; });
     return 0;
 }
 
