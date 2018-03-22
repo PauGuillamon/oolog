@@ -27,7 +27,7 @@ Log::~Log() {
 void Log::PrintLog(const logStream& stream, LogLevel logLevel) {
     // TODO: thread-safe
     std::string textToLog = stream.str();
-    printer.get()->PrintLog(textToLog, logLevel);
+    printer->PrintLog(textToLog, logLevel);
 }
 
 
