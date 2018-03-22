@@ -30,7 +30,8 @@ class LogPrinter {
 };
 
 
-
+#include <sstream>
+#include <iostream>
 class Log {
 	public:
 		Log(std::shared_ptr<LogPrinter> logPrinter, LogLevel minLogLevel);
@@ -42,13 +43,35 @@ class Log {
 		void Info(LogFunction);
 		void Debug(LogFunction);
 		void Verbose(LogFunction);
+                
+                //template<typename T, typename... Args>
+                //void LogVariadic(T a, Args... args);
+                
+                template<typename T>
+                void LogVariadic(T a){
+                    std::ostringstream str;
+    
+                    str << a;
+                    std::cout << "str : " << str << std::endl;
+                    //std::string textToLog = str.str();
+                    //printer.get()->PrintLog(textToLog, LogLevel::debug);
+                }
+                
 		
 	private:
+                template<typename T, typename... Args>
+                void logTemplated(stream& str, T t, Args... args);
+                
+                template<typename T>
+                void logTemplated(stream& str, T t);
+                
                 std::shared_ptr<LogPrinter> printer;
 		LogLevel minLevelAllowed;
 
 		void LogIfEnoughLevel(LogFunction& logFunction, LogLevel logLevel);
 };
+
+
 
 
 

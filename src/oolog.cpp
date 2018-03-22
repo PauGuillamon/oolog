@@ -22,6 +22,43 @@ Log::~Log() {
     // Empty
 }
 
+/*
+template<typename T, typename... Args>
+void Log::LogVariadic(T a, Args... args){
+    stream str;
+    
+    str << a;
+    logTemplated(str, args...);
+    
+    std::string textToLog = str.str();
+    printer.get()->PrintLog(textToLog, LogLevel::debug);
+}
+*/
+
+/*
+template<typename T>
+void Log::LogVariadic(T a){
+    stream str;
+    
+    str << a;
+    
+    std::string textToLog = str.str();
+    printer.get()->PrintLog(textToLog, LogLevel::debug);
+}*/
+
+
+template<typename T, typename... Args>
+void Log::logTemplated(stream& str, T t, Args... args) {
+    str << t;
+    logTemplated(str, args...);
+}
+
+
+template<typename T>
+void Log::logTemplated(stream& str, T t) {
+    str << t;
+}
+
 
 
 void Log::Fatal(LogFunction logFunction) {
