@@ -5,15 +5,26 @@
 #include <sstream>
 
 void ComplexOperation(oolog::Log& myLog) {
-    myLog.Debug([](oolog::out log){ log << "Starting Complex Operation------------"; });
-    myLog.Verbose([](oolog::out log){ log << "preparing values...."; });
-    myLog.Info([](oolog::out log){ log << "Starting"; });
-    myLog.Warning([](oolog::out log){ log << "Some values are out of bound."; });
-    myLog.Error([](oolog::out log){ log << "Complex operation detected error: " << 3; });
-    myLog.Fatal([](oolog::out log){ log << "Couldn't recover after error. Cancelling operation"; });
-    myLog.Info([](oolog::out log){ log << "Operation failed"; });
-    myLog.Verbose([](oolog::out log){ log << "preparing to exit"; });
-    myLog.Debug([](oolog::out log){ log << "Exiting complex Operation------------"; });
+    myLog.Debug("Starting Complex Operation------------");
+    myLog.Verbose("preparing values....");
+    myLog.Info("Starting");
+    myLog.Warning("Some values are out of bound.");
+    myLog.Error("Complex operation detected error: ", 3);
+    myLog.Fatal("Couldn't recover after error. Cancelling operation");
+    myLog.Info("Operation failed");
+    myLog.Verbose("preparing to exit");
+    myLog.Debug("Exiting complex Operation------------");
+}
+
+
+void RunApp(oolog::Log& myLog) {
+    myLog.Info("App has started!");
+
+    myLog.Verbose("hello world from oolog!");
+
+    ComplexOperation(myLog);
+    
+    myLog.Info("Closing app...");
 }
 
 
@@ -24,18 +35,9 @@ int main(){
         std::make_shared<oolog::ColoredLogPrinter>(
         std::make_shared<oolog::ConsoleLogPrinter>()));
     
-    oolog::Log mylogger(logPrinter, oolog::LogLevel::verbose);
-
-    mylogger.Info([](oolog::out log){ log << "App has started!"; });
-    mylogger.Verbose([](oolog::out log){ log << "hello world from oolog!"; });
-
-    ComplexOperation(mylogger);
-
+    oolog::Log log(logPrinter, oolog::LogLevel::Verbose);
     
-    mylogger.Info([](oolog::out log){ log << "Closing app..."; });
-    
-    mylogger.PrintLog(1);
-    mylogger.PrintLog(123, "inside function. Value: ", 123.5, 5421);
+    RunApp(log);
     
     return 0;
 }

@@ -8,19 +8,17 @@
 
 namespace oolog {
 
-typedef std::ostringstream stream;
-typedef stream& out;
-typedef std::function<void(out)> LogFunction;
+using logStream = std::ostringstream;
 
 
 enum class LogLevel {
-	none,
-	fatal,
-	error,
-	warning,
-	info,
-	debug,
-	verbose
+	None,
+	Fatal,
+	Error,
+	Warning,
+	Info,
+	Debug,
+	Verbose
 };
 
 
@@ -37,40 +35,69 @@ class Log {
 		Log(std::shared_ptr<LogPrinter> logPrinter, LogLevel minLogLevel);
 		virtual ~Log();
 
-        void Fatal(LogFunction);
-		void Error(LogFunction);
-		void Warning(LogFunction);
-		void Info(LogFunction);
-		void Debug(LogFunction);
-		void Verbose(LogFunction);
         
         template<typename... Args>
-        void PrintLog(Args... args) {
-                stream str;
-                logTemplated(str, args...);
+        void Fatal(Args... args) {
+            LogIfEnoughLevel(LogLevel::Fatal, args...);
+        }
+        
 
-                std::string textToLog = str.str();
-                printer.get()->PrintLog(textToLog, LogLevel::debug);
+        template<typename... Args>
+		void Error(Args... args) {
+            LogIfEnoughLevel(LogLevel::Error, args...);
+        }
+
+
+        template<typename... Args>
+		void Warning(Args... args) {
+            LogIfEnoughLevel(LogLevel::Warning, args...);
+        }
+
+
+        template<typename... Args>
+		void Info(Args... args) {
+            LogIfEnoughLevel(LogLevel::Info, args...);
+        }
+        
+
+        template<typename... Args>
+		void Debug(Args... args) {
+            LogIfEnoughLevel(LogLevel::Debug, args...);
+        }
+        
+
+        template<typename... Args>
+		void Verbose(Args... args) {
+            LogIfEnoughLevel(LogLevel::Verbose, args...);
         }
                 
 		
-	private:
+	private:        
+        std::shared_ptr<LogPrinter> printer;
+		LogLevel minLevelAllowed;
 
         template<typename T>
-        void logTemplated(std::ostringstream& str, T t) {
+        void ExpandLogArgs(logStream& str, const T& t) {
             str << t;
         }
 
         template<typename T, typename... Args>
-        void logTemplated(std::ostringstream& str, T t, Args... args) {
-            str << t;
-            logTemplated(str, args...);
+        void ExpandLogArgs(logStream& str, T t, const Args&... args) {
+            ExpandLogArgs(str, t);
+            ExpandLogArgs(str, args...);
         }
-                
-        std::shared_ptr<LogPrinter> printer;
-		LogLevel minLevelAllowed;
 
-		void LogIfEnoughLevel(LogFunction& logFunction, LogLevel logLevel);
+        template<typename... Args>
+		void LogIfEnoughLevel(LogLevel logLevel, const Args&... args) {
+            if(logLevel <= minLevelAllowed) {
+                logStream stream;
+                ExpandLogArgs(stream, args...);
+
+                PrintLog(stream, logLevel);
+            }
+        }
+
+        void PrintLog(const logStream& stream, LogLevel logLevel);
 };
 
 
@@ -119,27 +146,27 @@ class ColoredLogPrinter : public LogPrinter {
             // https://stackoverflow.com/questions/2616906/how-do-i-output-coloured-text-to-a-linux-terminal
             std::cout << "\033[1;";
             switch(logLevel) {
-                case LogLevel::fatal:
+                case LogLevel::Fatal:
                     std::cout << "31m";
                     break;
                     
-                case LogLevel::error:
+                case LogLevel::Error:
                     std::cout << "36m";
                     break;
                     
-                case LogLevel::warning:
+                case LogLevel::Warning:
                     std::cout << "35m";
                     break;
                     
-                case LogLevel::info:
+                case LogLevel::Info:
                     std::cout << "34m";
                     break;
                     
-                case LogLevel::debug:
+                case LogLevel::Debug:
                     std::cout << "31m";
                     break;
                     
-                case LogLevel::verbose:
+                case LogLevel::Verbose:
                     std::cout << "30m";
                     break;
             }
