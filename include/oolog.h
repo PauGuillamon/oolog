@@ -2,6 +2,7 @@
 #define OOLOG_H_
 
 #include <functional>
+#include <sstream>
 #include <iostream>
 #include <memory>
 
@@ -30,42 +31,43 @@ class LogPrinter {
 };
 
 
-#include <sstream>
-#include <iostream>
+
 class Log {
 	public:
 		Log(std::shared_ptr<LogPrinter> logPrinter, LogLevel minLogLevel);
 		virtual ~Log();
 
-                void Fatal(LogFunction);
+        void Fatal(LogFunction);
 		void Error(LogFunction);
 		void Warning(LogFunction);
 		void Info(LogFunction);
 		void Debug(LogFunction);
 		void Verbose(LogFunction);
-                
-                //template<typename T, typename... Args>
-                //void LogVariadic(T a, Args... args);
-                
-                template<typename T>
-                void LogVariadic(T a){
-                    std::ostringstream str;
-    
-                    str << a;
-                    std::cout << "str : " << str << std::endl;
-                    //std::string textToLog = str.str();
-                    //printer.get()->PrintLog(textToLog, LogLevel::debug);
-                }
+        
+        template<typename... Args>
+        void PrintLog(Args... args) {
+                stream str;
+                logTemplated(str, args...);
+
+                std::string textToLog = str.str();
+                printer.get()->PrintLog(textToLog, LogLevel::debug);
+        }
                 
 		
 	private:
-                template<typename T, typename... Args>
-                void logTemplated(stream& str, T t, Args... args);
+
+        template<typename T>
+        void logTemplated(std::ostringstream& str, T t) {
+            str << t;
+        }
+
+        template<typename T, typename... Args>
+        void logTemplated(std::ostringstream& str, T t, Args... args) {
+            str << t;
+            logTemplated(str, args...);
+        }
                 
-                template<typename T>
-                void logTemplated(stream& str, T t);
-                
-                std::shared_ptr<LogPrinter> printer;
+        std::shared_ptr<LogPrinter> printer;
 		LogLevel minLevelAllowed;
 
 		void LogIfEnoughLevel(LogFunction& logFunction, LogLevel logLevel);

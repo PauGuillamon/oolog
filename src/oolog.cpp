@@ -22,6 +22,9 @@ Log::~Log() {
     // Empty
 }
 
+
+
+
 /*
 template<typename T, typename... Args>
 void Log::LogVariadic(T a, Args... args){
@@ -47,17 +50,17 @@ void Log::LogVariadic(T a){
 }*/
 
 
-template<typename T, typename... Args>
-void Log::logTemplated(stream& str, T t, Args... args) {
-    str << t;
-    logTemplated(str, args...);
-}
-
-
-template<typename T>
-void Log::logTemplated(stream& str, T t) {
-    str << t;
-}
+//template<typename T, typename... Args>
+//void Log::logTemplated(stream& str, T t, Args... args) {
+//    str << t;
+//    logTemplated(str, args...);
+//}
+//
+//
+//template<typename T>
+//void Log::logTemplated(stream& str, T t) {
+//    str << t;
+//}
 
 
 
