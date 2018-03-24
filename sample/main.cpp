@@ -1,5 +1,8 @@
 
 #include "../include/oolog.h"
+#include "../include/printers/ConsoleLogPrinter.h"
+#include "../include/printers/ColoredLogPrinter.h"
+#include "../include/printers/EndlLogPrinter.h"
 
 #include <iostream>
 #include <sstream>
@@ -23,22 +26,28 @@ void RunApp(oolog::Log& myLog) {
     myLog.Verbose("hello world from oolog!");
 
     ComplexOperation(myLog);
-    
+
     myLog.Info("Closing app...");
 }
 
 
 
 int main(){
-    std::shared_ptr<oolog::LogPrinter> logPrinter = 
+#if defined WIN32
+	std::shared_ptr<oolog::LogPrinter> logPrinter =
+		std::make_shared<oolog::EndlLogPrinter>(
+		std::make_shared<oolog::ConsoleLogPrinter>());
+#else
+    std::shared_ptr<oolog::LogPrinter> logPrinter =
         std::make_shared<oolog::EndlLogPrinter>(
         std::make_shared<oolog::ColoredLogPrinter>(
         std::make_shared<oolog::ConsoleLogPrinter>()));
-    
+#endif
+
     oolog::Log log(logPrinter, oolog::LogLevel::Verbose);
-    
+
     RunApp(log);
-    
+
     return 0;
 }
 

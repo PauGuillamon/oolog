@@ -1,15 +1,18 @@
 #ifndef OOLOG_H_
 #define OOLOG_H_
 
+
+
 #include <functional>
 #include <sstream>
 #include <iostream>
 #include <memory>
 
+
+
 namespace oolog {
 
 using logStream = std::ostringstream;
-
 
 enum class LogLevel {
 	None,
@@ -89,7 +92,7 @@ class Log {
 
         template<typename... Args>
 		void LogIfEnoughLevel(LogLevel logLevel, const Args&... args) {
-            if(logLevel <= minLevelAllowed) {
+            if(LogLevelIsAllowed(logLevel)) {
                 logStream stream;
                 ExpandLogArgs(stream, args...);
 
@@ -98,82 +101,7 @@ class Log {
         }
 
         void PrintLog(const logStream& stream, LogLevel logLevel);
-};
-
-
-
-
-
-class ConsoleLogPrinter : public LogPrinter {
-    public:
-        ConsoleLogPrinter();
-    private:
-        virtual void PrintLog(std::string&, LogLevel);
-};
-
-
-
-class EndlLogPrinter : public LogPrinter {
-    public:
-        EndlLogPrinter(std::shared_ptr<LogPrinter> origin) : 
-            originLogPrinter(std::move(origin))
-        {
-            // Empty
-        }
-    private:
-        std::shared_ptr<LogPrinter> originLogPrinter;
-        
-        virtual void PrintLog(std::string& textToLog, LogLevel logLevel) {
-            originLogPrinter.get()->PrintLog(textToLog, logLevel);
-            std::cout << std::endl;
-        }
-};
-
-
-
-class ColoredLogPrinter : public LogPrinter {
-    public:
-        ColoredLogPrinter(std::shared_ptr<LogPrinter> origin) : 
-            originLogPrinter(std::move(origin))
-        {
-            // Empty
-        }
-        
-    private:
-        std::shared_ptr<LogPrinter> originLogPrinter;
-        
-        virtual void PrintLog(std::string& textToLog, LogLevel logLevel) {
-            // https://stackoverflow.com/questions/2616906/how-do-i-output-coloured-text-to-a-linux-terminal
-            std::cout << "\033[1;";
-            switch(logLevel) {
-                case LogLevel::Fatal:
-                    std::cout << "31m";
-                    break;
-                    
-                case LogLevel::Error:
-                    std::cout << "36m";
-                    break;
-                    
-                case LogLevel::Warning:
-                    std::cout << "35m";
-                    break;
-                    
-                case LogLevel::Info:
-                    std::cout << "34m";
-                    break;
-                    
-                case LogLevel::Debug:
-                    std::cout << "31m";
-                    break;
-                    
-                case LogLevel::Verbose:
-                    std::cout << "30m";
-                    break;
-            }
-            
-            originLogPrinter.get()->PrintLog(textToLog, logLevel);
-            std::cout << "\033[0m";
-        }
+		bool LogLevelIsAllowed(LogLevel logLevel);
 };
 
 
