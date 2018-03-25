@@ -1,0 +1,8 @@
+#ifndef OOLOG_VERSION_H
+#define OOLOG_VERSION_H
+
+#define oolog_VERSION_MAJOR     ${oolog_VERSION_MAJOR}
+#define oolog_VERSION_MINOR     ${oolog_VERSION_MINOR}
+#define oolog_VERSION_REVISION  ${oolog_VERSION_REVISION}
+
+#endif // OOLOG_
