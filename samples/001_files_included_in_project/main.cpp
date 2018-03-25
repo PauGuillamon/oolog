@@ -1,8 +1,8 @@
 
-#include "../include/oolog.h"
-#include "../include/printers/ConsoleLogPrinter.h"
-#include "../include/printers/ColoredLogPrinter.h"
-#include "../include/printers/EndlLogPrinter.h"
+#include "oolog.h"
+#include "printers/ConsoleLogPrinter.h"
+#include "printers/ColoredLogPrinter.h"
+#include "printers/EndlLogPrinter.h"
 
 #include <iostream>
 #include <sstream>
