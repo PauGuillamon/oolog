@@ -24,6 +24,12 @@ Log::~Log() {
 
 
 
+void Log::SetLogLevel(LogLevel newLogLevel) {
+	minLevelAllowed = newLogLevel;
+}
+
+
+
 void Log::PrintLog(const logStream& stream, LogLevel logLevel) {
     // TODO: thread-safe
     std::string textToLog = stream.str();
@@ -33,6 +39,7 @@ void Log::PrintLog(const logStream& stream, LogLevel logLevel) {
 
 
 bool Log::LogLevelIsAllowed(LogLevel logLevel) {
+	// TODO: thread-safe
 	return (logLevel <= minLevelAllowed);
 }
 

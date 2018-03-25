@@ -38,6 +38,9 @@ class Log {
 		Log(std::shared_ptr<LogPrinter> logPrinter, LogLevel minLogLevel);
 		virtual ~Log();
 
+
+		void SetLogLevel(LogLevel newLogLevel);
+
         
         template<typename... Args>
         void Fatal(Args... args) {
