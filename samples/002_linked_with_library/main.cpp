@@ -33,16 +33,10 @@ void RunApp(oolog::Log& myLog) {
 
 
 int main(){
-#if defined WIN32
-	std::shared_ptr<oolog::LogPrinter> logPrinter =
-		std::make_shared<oolog::EndlLogPrinter>(
-		std::make_shared<oolog::ConsoleLogPrinter>());
-#else
     std::shared_ptr<oolog::LogPrinter> logPrinter =
         std::make_shared<oolog::EndlLogPrinter>(
         std::make_shared<oolog::ColoredLogPrinter>(
         std::make_shared<oolog::ConsoleLogPrinter>()));
-#endif
 
     oolog::Log log(logPrinter, oolog::LogLevel::Verbose);
 

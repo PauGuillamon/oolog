@@ -28,9 +28,9 @@ set(cmake_googleTest_args -DCMAKE_INSTALL_PREFIX=${GOOGLE_TEST_INSTALLATION_PATH
 
 ExternalProject_Add(${GOOGLE_TEST}
 GIT_REPOSITORY "https://github.com/google/googletest.git"
-GIT_TAG "master"
+GIT_TAG "release-1.8.0"
 CMAKE_ARGS ${cmake_googleTest_args} ${cmake_global_args}
-PREFIX "${GOOGLE_TEST}"
+PREFIX "${GOOGLE_TEST_PATH}"
 )
 
 
@@ -43,20 +43,25 @@ link_directories(${GOOGLE_TEST_INSTALLATION_PATH}/lib)
 # MAIN TARGET
 ######################################
 
-enable_testing()
+#enable_testing()
 
 add_executable(${PROJECT_NAME}
     test.cpp
+    oologTest.cpp
 )
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
 add_dependencies(${PROJECT_NAME} ${GOOGLE_TEST})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     gtest
-    gtest_main
+    gmock
+    oolog
 )
 
-add_test(${PROJECT_NAME} ${PROJECT_NAME})
+
+#add_test(${PROJECT_NAME} ${CMAKE_BINARY_DIR}/bin/test/${PROJECT_NAME})
 
 
 

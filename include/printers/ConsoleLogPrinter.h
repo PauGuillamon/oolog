@@ -13,7 +13,7 @@ namespace oolog {
 class ConsoleLogPrinter : public LogPrinter {
     public:
         ConsoleLogPrinter();
-    private:
+        
         virtual void PrintLog(std::string&, LogLevel);
 };
 

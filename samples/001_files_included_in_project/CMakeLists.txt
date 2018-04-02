@@ -7,7 +7,10 @@ set (CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/samples)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../include)
+include_directories(
+	${CMAKE_CURRENT_SOURCE_DIR}/../../include
+	${CMAKE_CURRENT_SOURCE_DIR}/../../include/printers
+)
 
 set(SOURCES
 	main.cpp

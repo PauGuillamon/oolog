@@ -14,10 +14,10 @@ class ColoredLogPrinter : public LogPrinter {
     public:
 		ColoredLogPrinter(std::shared_ptr<LogPrinter> origin);
         
+		virtual void PrintLog(std::string& textToLog, LogLevel logLevel);
+        
     private:
         std::shared_ptr<LogPrinter> originLogPrinter;
-        
-		virtual void PrintLog(std::string& textToLog, LogLevel logLevel);
 };
 
 

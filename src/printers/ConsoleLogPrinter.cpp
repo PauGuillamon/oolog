@@ -1,4 +1,4 @@
-#include "../../include/printers/ConsoleLogPrinter.h"
+#include "ConsoleLogPrinter.h"
 
 
 #include <sstream>

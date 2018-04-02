@@ -12,8 +12,8 @@ set(${PROJECT_NAME}_VERSION_REVISION 1)
 
 
 include_directories(
-    $[CMAKE_CURRENT_LIST_DIR]/../include
-    $[CMAKE_CURRENT_LIST_DIR]/../include/printers
+    ${CMAKE_CURRENT_LIST_DIR}/../include
+    ${CMAKE_CURRENT_LIST_DIR}/../include/printers
 )
 
 
@@ -28,6 +28,7 @@ set(SOURCES
     printers/ConsoleLogPrinter.cpp
     printers/ColoredLogPrinter.cpp
     printers/EndlLogPrinter.cpp
+    printers/FakePrinter.cpp
 )
 
 
