@@ -5,6 +5,8 @@ include(ExternalProject)
 
 project(oologTest)
 
+set(CMAKE_CXX_STANDARD 11)
+
 find_package(Threads REQUIRED)
 
 set (CMAKE_CXX_FLAGS "-pthread")
