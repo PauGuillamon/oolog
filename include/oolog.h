@@ -14,6 +14,12 @@ namespace oolog {
 
 using logStream = std::ostringstream;
 
+#ifdef OOLOG_EXPORTS
+	#define OOLOG_API __declspec(dllexport)
+#else
+	#define OOLOG_API
+#endif
+
 enum class LogLevel {
 	None,
 	Fatal,
@@ -25,7 +31,6 @@ enum class LogLevel {
 };
 
 
-
 class LogPrinter {
 	public:
 		virtual void PrintLog(std::string&, LogLevel) = 0;
@@ -35,45 +40,45 @@ class LogPrinter {
 
 class Log {
 	public:
-		Log(std::shared_ptr<LogPrinter> logPrinter, LogLevel minLogLevel);
-		virtual ~Log();
+		OOLOG_API Log(std::shared_ptr<LogPrinter> logPrinter, LogLevel minLogLevel);
+		OOLOG_API virtual ~Log();
 
 
-		void SetLogLevel(LogLevel newLogLevel);
+		OOLOG_API void SetLogLevel(LogLevel newLogLevel);
 
         
         template<typename... Args>
-        void Fatal(Args... args) {
+		OOLOG_API void Fatal(Args... args) {
             LogIfEnoughLevel(LogLevel::Fatal, args...);
         }
         
 
         template<typename... Args>
-		void Error(Args... args) {
+		OOLOG_API void Error(Args... args) {
             LogIfEnoughLevel(LogLevel::Error, args...);
         }
 
 
         template<typename... Args>
-		void Warning(Args... args) {
+		OOLOG_API void Warning(Args... args) {
             LogIfEnoughLevel(LogLevel::Warning, args...);
         }
 
 
         template<typename... Args>
-		void Info(Args... args) {
+		OOLOG_API void Info(Args... args) {
             LogIfEnoughLevel(LogLevel::Info, args...);
         }
         
 
         template<typename... Args>
-		void Debug(Args... args) {
+		OOLOG_API void Debug(Args... args) {
             LogIfEnoughLevel(LogLevel::Debug, args...);
         }
         
 
         template<typename... Args>
-		void Verbose(Args... args) {
+		OOLOG_API void Verbose(Args... args) {
             LogIfEnoughLevel(LogLevel::Verbose, args...);
         }
                 
@@ -103,8 +108,8 @@ class Log {
             }
         }
 
-        void PrintLog(const logStream& stream, LogLevel logLevel);
-		bool LogLevelIsAllowed(LogLevel logLevel);
+		OOLOG_API void PrintLog(const logStream& stream, LogLevel logLevel);
+		OOLOG_API bool LogLevelIsAllowed(LogLevel logLevel);
 };
 
 

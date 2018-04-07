@@ -12,7 +12,7 @@ namespace oolog {
 
 class ColoredLogPrinter : public LogPrinter {
     public:
-		ColoredLogPrinter(std::shared_ptr<LogPrinter> origin);
+		OOLOG_API ColoredLogPrinter(std::shared_ptr<LogPrinter> origin);
         
 		virtual void PrintLog(std::string& textToLog, LogLevel logLevel);
         

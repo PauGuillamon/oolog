@@ -13,7 +13,7 @@ namespace oolog {
 
 class FakePrinter : public LogPrinter {
     public:
-		FakePrinter();
+		OOLOG_API FakePrinter();
         
 		virtual void PrintLog(std::string& textToLog, LogLevel logLevel);
 };

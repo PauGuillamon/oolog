@@ -13,7 +13,7 @@ namespace oolog {
 
 class EndlLogPrinter : public LogPrinter {
     public:
-		EndlLogPrinter(std::shared_ptr<LogPrinter> origin);
+		OOLOG_API EndlLogPrinter(std::shared_ptr<LogPrinter> origin);
         
 		virtual void PrintLog(std::string& textToLog, LogLevel logLevel);
 

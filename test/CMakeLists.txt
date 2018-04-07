@@ -9,9 +9,12 @@ set(CMAKE_CXX_STANDARD 11)
 
 find_package(Threads REQUIRED)
 
-set (CMAKE_CXX_FLAGS "-pthread")
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/test)
+if(UNIX)
+    set (CMAKE_CXX_FLAGS "-pthread")
+elseif(MSVC)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} /MT")
+endif()
 
 
 ######################################
@@ -30,7 +33,7 @@ set(cmake_googleTest_args -DCMAKE_INSTALL_PREFIX=${GOOGLE_TEST_INSTALLATION_PATH
 
 ExternalProject_Add(${GOOGLE_TEST}
 GIT_REPOSITORY "https://github.com/google/googletest.git"
-GIT_TAG "release-1.8.0"
+GIT_TAG "master"
 CMAKE_ARGS ${cmake_googleTest_args} ${cmake_global_args}
 PREFIX "${GOOGLE_TEST_PATH}"
 )
