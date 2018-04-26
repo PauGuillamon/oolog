@@ -19,7 +19,7 @@ oolog stands for object oriented log. It is a customizable and easy to use loggi
 ## Why another log library
 The main reason that motivated me to make another log library was the fact that the most famous C++ log libraries on GitHub don't follow some code practices I am very used to.
 
-In this library you won't use magic global initialization macros, there are no global states and you won't need to learn a new formatting way.
+In this library you won't use magic global initialization macros, there are no global states and you won't need to learn a new way of formatting text.
 
 With this library, you will use proper objects. You will have the ability to create as many log objects as you want and customize them as you like.
 
