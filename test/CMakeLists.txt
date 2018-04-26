@@ -59,11 +59,19 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
 add_dependencies(${PROJECT_NAME} ${GOOGLE_TEST})
 
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    gtest
-    gmock
-    oolog
-)
+if(MSVC)
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        debug gtestd optimized gtest
+        debug gmockd optimized gmock
+        debug oolog optimized oolog
+    )
+else()
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        gtest
+        gmock
+        oolog
+    )
+endif()
 
 
 #add_test(${PROJECT_NAME} ${CMAKE_BINARY_DIR}/bin/test/${PROJECT_NAME})
