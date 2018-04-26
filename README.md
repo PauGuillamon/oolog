@@ -8,8 +8,8 @@
     - [Samples](#samples)
 - [Design](#design)
     - [Available Printers](#available-printers)
+    - [Testing code using oolog](#testing-code-using-oolog)
 - [Customization](#customization)
-- [Test](#test)
 - [Performance comparison](#performance-comparison)
 - [License](#license)
 
@@ -23,7 +23,7 @@ In this library you won't use magic global initialization macros, there are no g
 
 With this library, you will use proper objects. You will have the ability to create as many log objects as you want and customize them as you like.
 
-Code using this library, will be easy to test and you won't have to worry about test code logging to console or files. You will only need to inject a log test double to your class under test.
+Code using this library, will be easy to test and you won't have to worry about test code logging to console or files. You will only need to inject the provided test double to your class under test.
 
 # Getting started
 ## Get the code
@@ -53,7 +53,7 @@ make oologTest      // will only build test suite
 make sample_001     // will only build sample 001
 ```
 ### Add files to project
-Add the `src/oolog.cpp` file to your project and add the `include/` as include directory.
+Add the `src/oolog.cpp` file to your project and add the `include/` folder as include directory.
 
 If you are going to use any of the printers provided by **oolog**, add the printers you need from `src/printers/xxx.cpp` and add the `include/printers/` folder as include directory to your project.
 
@@ -91,11 +91,16 @@ Check the `samples` folder to see more usages of the library.
 # Design
 The library has been designed to be highly customizable. 
 ## Available Printers
+## Testing code using oolog
+oolog integrates perfectly in test suites (whether they are unit tests or integration tests). You only need to provide a Printer that fulfills your requirements in the test suite.
+
+Furthermore, oolog provides a **FakePrinter** that you can use as test double for your test suite. You won't have to worry about having logs when running your automated tests.
+
+The FakePrinter is actually used to test oolog itself.
+
 # Customization
 
-# Test
-
-# Performance Comparison
+# Performance comparison
 # License
 
 
