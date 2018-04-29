@@ -5,7 +5,7 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
-
+using ::testing::Exactly;
 
 class LogUnitTest : public testing::Test {
 	protected:
@@ -26,9 +26,8 @@ TEST_F(LogUnitTest, Test_CheckSameLogLevelIsLogged) {
 	std::shared_ptr<MockPrinter> logPrinter = std::make_shared<MockPrinter>();
 	oolog::Log log(logPrinter, oolog::LogLevel::Warning);
 
-	//EXPECT_CALL(logPrinter.get(), PrintLog);
+	EXPECT_CALL(*logPrinter.get(), PrintLog).Times(Exactly(1));
 
 	log.Warning("");
-	//EXPECT_TRUE(result);
 }
 
