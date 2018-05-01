@@ -9,16 +9,19 @@
 #include <memory>
 
 
-
-namespace oolog {
-
-using logStream = std::ostringstream;
-
 #ifdef OOLOG_EXPORTS
 	#define OOLOG_API __declspec(dllexport)
 #else
 	#define OOLOG_API
 #endif
+
+
+
+namespace oolog {
+
+using logStream = std::ostringstream;
+
+
 
 enum class LogLevel {
 	None,

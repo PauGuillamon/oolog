@@ -6,11 +6,6 @@ project(sample_002)
 set (CMAKE_CXX_STANDARD 11)
 
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY 
-	${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}
-)
-
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../include)
 
 set(SOURCES
