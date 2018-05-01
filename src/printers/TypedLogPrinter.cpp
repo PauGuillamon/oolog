@@ -32,7 +32,7 @@ void TypedLogPrinter::PrintLog(std::string& textToLog, LogLevel logLevel) {
 		default:				stream << "_";	break;
 	}
 
-	stream << "]";
+	stream << "] ";
     
 	textToLog.insert(0, stream.str());
 

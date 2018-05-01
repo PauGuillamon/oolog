@@ -9,10 +9,10 @@
 
 
 
-void ThreadedFunction(oolog::Log& myLog) {
+void ThreadedFunction(oolog::Log* myLog) {
 	std::thread::id threadId = std::this_thread::get_id();
 	for (int i = 0; i < 10; i++) {
-		myLog.Info("[", threadId, "] - iteration ", i);
+		myLog->Info(i, " - thread id: ", threadId);
 	}
 }
 
@@ -26,8 +26,8 @@ int main(){
 
     oolog::Log log(logPrinter, oolog::LogLevel::Verbose);
 
-	std::thread threadOne(ThreadedFunction, log);
-	std::thread threadTwo(ThreadedFunction, log);
+	std::thread threadOne(ThreadedFunction, &log);
+	std::thread threadTwo(ThreadedFunction, &log);
 
 	threadOne.join();
 	threadTwo.join();
