@@ -4,8 +4,7 @@
 #include "printers/ColoredLogPrinter.h"
 #include "printers/EndlLogPrinter.h"
 
-#include <iostream>
-#include <sstream>
+
 
 void ComplexOperation(oolog::Log& myLog) {
     myLog.Debug("Starting Complex Operation------------");
@@ -18,6 +17,7 @@ void ComplexOperation(oolog::Log& myLog) {
     myLog.Verbose("preparing to exit");
     myLog.Debug("Exiting complex Operation------------");
 }
+
 
 
 void RunApp(oolog::Log& myLog) {

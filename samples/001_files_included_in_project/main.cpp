@@ -3,8 +3,6 @@
 #include "printers/ConsoleLogPrinter.h"
 #include "printers/EndlLogPrinter.h"
 
-#include <iostream>
-#include <sstream>
 
 
 void RunApp(oolog::Log& myLog) {
