@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iostream>
 #include <memory>
+#include <mutex>
 
 
 #ifdef OOLOG_EXPORTS
@@ -89,6 +90,7 @@ class Log {
 	private:        
         std::shared_ptr<LogPrinter> printer;
 		LogLevel minLevelAllowed;
+		std::mutex logMutex;
 
         template<typename T>
         void ExpandLogArgs(logStream& str, const T& t) {
@@ -113,6 +115,9 @@ class Log {
 
 		OOLOG_API void PrintLog(const logStream& stream, LogLevel logLevel);
 		OOLOG_API bool LogLevelIsAllowed(LogLevel logLevel);
+
+		void LockMutex();
+		void UnlockMutex();
 };
 
 

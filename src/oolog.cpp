@@ -25,22 +25,45 @@ Log::~Log() {
 
 
 void Log::SetLogLevel(LogLevel newLogLevel) {
+	LockMutex();
+
 	minLevelAllowed = newLogLevel;
+
+	UnlockMutex();
 }
 
 
 
 void Log::PrintLog(const logStream& stream, LogLevel logLevel) {
-    // TODO: thread-safe
+	LockMutex();
+
     std::string textToLog = stream.str();
     printer->PrintLog(textToLog, logLevel);
+
+	UnlockMutex();
 }
 
 
 
 bool Log::LogLevelIsAllowed(LogLevel logLevel) {
-	// TODO: thread-safe
-	return (logLevel <= minLevelAllowed);
+	LockMutex();
+
+	bool isAllowed = (logLevel <= minLevelAllowed);
+
+	UnlockMutex();
+	return isAllowed;
+}
+
+
+
+void Log::LockMutex() {
+	logMutex.lock();
+}
+
+
+
+void Log::UnlockMutex() {
+	logMutex.unlock();
 }
 
 

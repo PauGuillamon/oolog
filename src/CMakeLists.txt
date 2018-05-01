@@ -29,6 +29,7 @@ set(SOURCES
     printers/ColoredLogPrinter.cpp
     printers/EndlLogPrinter.cpp
     printers/FakePrinter.cpp
+    printers/TypedLogPrinter.cpp
 )
 
 if(MSVC)
