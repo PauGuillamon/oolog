@@ -6,6 +6,7 @@
 #include "printers/TypedLogPrinter.h"
 
 #include <thread>
+#include <chrono>
 
 
 
@@ -13,6 +14,7 @@ void ThreadedFunction(oolog::Log* myLog) {
 	std::thread::id threadId = std::this_thread::get_id();
 	for (int i = 0; i < 10; i++) {
 		myLog->Info(i, " - thread id: ", threadId);
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 }
 

@@ -5,6 +5,15 @@ project(sample_004)
 
 set (CMAKE_CXX_STANDARD 11)
 
+find_package(Threads REQUIRED)
+
+if(UNIX)
+	set(CMAKE_CXX_FLAGS "-pthread")
+elseif(MSVC)
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+endif()
+
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../include)
 
