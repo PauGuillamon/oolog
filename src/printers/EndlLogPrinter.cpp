@@ -15,8 +15,11 @@ EndlLogPrinter::EndlLogPrinter(std::shared_ptr<LogPrinter> origin) :
 
 
 void EndlLogPrinter::PrintLog(std::string& textToLog, LogLevel logLevel) {
+	logStream stream;
+	stream << std::endl;
+	textToLog.append(stream.str());
+
 	originLogPrinter.get()->PrintLog(textToLog, logLevel);
-	std::cout << std::endl;
 }
 
 

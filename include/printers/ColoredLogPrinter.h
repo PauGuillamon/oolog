@@ -18,6 +18,9 @@ class ColoredLogPrinter : public LogPrinter {
         
     private:
         std::shared_ptr<LogPrinter> originLogPrinter;
+
+		void SetColorAtStart(std::string& textToLog, const LogLevel logLevel);
+		void RestoreColorAtEnd(std::string& textToLog);
 };
 
 

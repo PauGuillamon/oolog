@@ -16,7 +16,7 @@ void RunApp(oolog::Log& myLog) {
 int main() {
 	std::shared_ptr<oolog::LogPrinter> logPrinter =
 		std::make_shared<oolog::EndlLogPrinter>(
-			std::make_shared<oolog::ConsoleLogPrinter>());
+		std::make_shared<oolog::ConsoleLogPrinter>());
 
 	oolog::Log log(logPrinter, oolog::LogLevel::Info);
 
