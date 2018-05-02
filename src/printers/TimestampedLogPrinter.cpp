@@ -4,7 +4,6 @@
 #include <sstream>
 #include <chrono>
 #include <iomanip>
-#include <ctime>
 
 
 namespace oolog {
@@ -25,7 +24,6 @@ void TimestampedLogPrinter::PrintLog(std::string& textToLog, LogLevel logLevel) 
 
 	std::string timestamp = GetTimestamp();
 	stream << timestamp;
-
 	stream << " ";
     
 	textToLog.insert(0, stream.str());
