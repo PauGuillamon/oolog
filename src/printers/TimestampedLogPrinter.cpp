@@ -26,7 +26,7 @@ void TimestampedLogPrinter::PrintLog(std::string& textToLog, LogLevel logLevel) 
 	std::string timestamp = GetTimestamp();
 	stream << timestamp;
 
-	stream << ": ";
+	stream << " ";
     
 	textToLog.insert(0, stream.str());
 
@@ -38,9 +38,10 @@ void TimestampedLogPrinter::PrintLog(std::string& textToLog, LogLevel logLevel) 
 std::string TimestampedLogPrinter::GetTimestamp() {
 	auto now = std::chrono::system_clock::now();
 	std::time_t time = std::chrono::system_clock::to_time_t(now);
-
-	std::string timestamp = std::ctime(&time);
-	return  timestamp.substr(0, timestamp.size() - 1);
+        
+        logStream stream;
+        stream << std::put_time(std::localtime(&time), "%Y/%m/%d %H:%M:%S");
+        return stream.str();
 }
 
 
