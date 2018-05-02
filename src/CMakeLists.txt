@@ -29,6 +29,7 @@ set(SOURCES
     printers/ColoredLogPrinter.cpp
     printers/EndlLogPrinter.cpp
     printers/FakePrinter.cpp
+    printers/TimestampedLogPrinter.cpp
     printers/TypedLogPrinter.cpp
 )
 
