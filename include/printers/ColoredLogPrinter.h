@@ -5,6 +5,9 @@
 
 #include "../oolog.h"
 
+#if defined _WINDOWS
+#include <Windows.h>
+#endif
 
 
 namespace oolog {
@@ -18,9 +21,12 @@ class ColoredLogPrinter : public LogPrinter {
         
     private:
         std::shared_ptr<LogPrinter> originLogPrinter;
+#if defined _WINDOWS
+		HANDLE consoleHandle;
+		CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
+#endif
 
-		void SetColorAtStart(std::string& textToLog, const LogLevel logLevel);
-		void RestoreColorAtEnd(std::string& textToLog);
+		void SetColor(std::string& textToLog, const LogLevel logLevel);
 };
 
 
