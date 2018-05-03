@@ -46,10 +46,10 @@ void ColoredLogPrinter::SetColor(std::string& textToLog, const LogLevel logLevel
 	stream << "\033[1;";
 	switch (logLevel) {
 		case LogLevel::Fatal:		stream << "31m";	break;
-		case LogLevel::Error:		stream << "36m";	break;
-		case LogLevel::Warning:		stream << "35m";	break;
+		case LogLevel::Error:		stream << "31m";	break;
+		case LogLevel::Warning:		stream << "33m";	break;
 		case LogLevel::Info:		stream << "34m";	break;
-		case LogLevel::Debug:		stream << "31m";	break;
+		case LogLevel::Debug:		stream << "32m";	break;
 		case LogLevel::Verbose:		stream << "30m";	break;
 		default:										break;
 	}
