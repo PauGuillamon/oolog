@@ -1,7 +1,6 @@
 
 #include "../include/oolog.h"
 
-#include <sstream>
 
 
 

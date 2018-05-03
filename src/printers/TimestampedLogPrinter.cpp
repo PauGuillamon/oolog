@@ -1,7 +1,6 @@
 #include "TimestampedLogPrinter.h"
 
 
-#include <sstream>
 #include <chrono>
 #include <iomanip>
 

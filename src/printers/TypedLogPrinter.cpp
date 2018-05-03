@@ -1,12 +1,9 @@
 #include "TypedLogPrinter.h"
 
 
-#include <sstream>
-
 
 
 namespace oolog {
-
 
 
 

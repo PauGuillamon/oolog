@@ -1,9 +1,6 @@
 #include "ConsoleLogPrinter.h"
 
 
-#include <sstream>
-
-
 
 namespace oolog {
 
