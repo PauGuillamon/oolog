@@ -11,7 +11,8 @@ int main(){
     std::shared_ptr<oolog::LogPrinter> logPrinter =
         std::make_shared<oolog::TypedLogPrinter>(
         std::make_shared<oolog::TimestampedLogPrinter>(
-        std::make_shared<oolog::FileLogPrinter>("output.log")));
+        std::make_shared<oolog::EndlLogPrinter>(
+        std::make_shared<oolog::FileLogPrinter>("output.log"))));
 
     oolog::Log log(logPrinter, oolog::LogLevel::Verbose);
 
