@@ -51,7 +51,7 @@ link_directories(${GOOGLE_TEST_INSTALLATION_PATH}/lib)
 #enable_testing()
 
 add_executable(${PROJECT_NAME}
-    test.cpp
+    main.cpp
     oologTest.cpp
 )
 

@@ -13,7 +13,6 @@ set(${PROJECT_NAME}_VERSION_REVISION 1)
 
 include_directories(
     ${CMAKE_CURRENT_LIST_DIR}/../include
-    ${CMAKE_CURRENT_LIST_DIR}/../include/printers
 )
 
 
@@ -25,13 +24,14 @@ configure_file(
 
 set(SOURCES
     oolog.cpp
-    printers/ConsoleLogPrinter.cpp
-    printers/ColoredLogPrinter.cpp
-    printers/EndlLogPrinter.cpp
-    printers/FakePrinter.cpp
-    printers/FileLogPrinter.cpp
-    printers/TimestampedLogPrinter.cpp
-    printers/TypedLogPrinter.cpp
+    printers/Console.cpp
+    printers/File.cpp
+    printers/Fake.cpp
+    printers/decorators/Color.cpp
+    printers/decorators/Decorator.cpp
+    printers/decorators/Level.cpp
+    printers/decorators/NewLine.cpp
+    printers/decorators/Timestamp.cpp
 )
 
 if(MSVC)

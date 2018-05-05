@@ -1,7 +1,7 @@
 
 #include "oolog.h"
-#include "printers/ConsoleLogPrinter.h"
-#include "printers/EndlLogPrinter.h"
+#include "printers/Console.h"
+#include "printers/decorators/NewLine.h"
 
 
 
@@ -14,9 +14,9 @@ void RunApp(oolog::Log& myLog) {
 
 
 int main(){
-    std::shared_ptr<oolog::LogPrinter> logPrinter =
-        std::make_shared<oolog::EndlLogPrinter>(
-        std::make_shared<oolog::ConsoleLogPrinter>());
+    std::shared_ptr<oolog::printers::Printer> logPrinter =
+        std::make_shared<oolog::printers::decorators::NewLine>(
+        std::make_shared<oolog::printers::Console>());
 
     oolog::Log log(logPrinter, oolog::LogLevel::Info);
 

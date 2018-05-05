@@ -1,7 +1,8 @@
 
 
 #include "oolog.h"
-#include "printers/FakePrinter.h"
+#include "printers/Fake.h"
+
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
@@ -15,7 +16,7 @@ class LogUnitTest : public testing::Test {
 
 
 
-class MockPrinter : public oolog::FakePrinter {
+class MockPrinter : public oolog::printers::Fake {
     public:
         MOCK_METHOD2(PrintLog, void(std::string& str, oolog::LogLevel logLevel));
 };
@@ -59,8 +60,8 @@ TEST_F(LogUnitTest, Test_CheckErrorIsLoggedAfterChangingLevel) {
 	std::shared_ptr<MockPrinter> logPrinter = std::make_shared<MockPrinter>();
 	oolog::Log log(logPrinter, oolog::LogLevel::Warning);
 
-        log.SetLogLevel(oolog::LogLevel::Error);
-	EXPECT_CALL(*logPrinter.get(), PrintLog).Times(Exactly(0));
+    log.SetLogLevel(oolog::LogLevel::Error);
+	EXPECT_CALL(*logPrinter.get(), PrintLog).Times(Exactly(1));
 
 	log.Error("");
 }

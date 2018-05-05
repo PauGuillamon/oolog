@@ -14,9 +14,10 @@ include_directories(
 set(SOURCES
 	main.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/../../src/oolog.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/../../src/printers/ConsoleLogPrinter.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/../../src/printers/ColoredLogPrinter.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/../../src/printers/EndlLogPrinter.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/../../src/printers/Console.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/../../src/printers/decorators/Color.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/../../src/printers/decorators/Decorator.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/../../src/printers/decorators/NewLine.cpp
 )
 add_executable(${PROJECT_NAME} ${SOURCES})
 

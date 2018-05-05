@@ -1,7 +1,7 @@
 #ifndef OOLOG_H_
 #define OOLOG_H_
 
-
+#include "printers/Printer.h"
 
 #include <functional>
 #include <sstream>
@@ -35,16 +35,10 @@ enum class LogLevel {
 };
 
 
-class LogPrinter {
-	public:
-		virtual void PrintLog(std::string&, LogLevel) = 0;
-};
-
-
 
 class Log {
 	public:
-		OOLOG_API Log(std::shared_ptr<LogPrinter> logPrinter, LogLevel minLogLevel);
+		OOLOG_API Log(std::shared_ptr<printers::Printer> logPrinter, LogLevel minLogLevel);
 		OOLOG_API virtual ~Log();
 
 
@@ -88,7 +82,7 @@ class Log {
                 
 		
 	private:        
-        std::shared_ptr<LogPrinter> printer;
+        std::shared_ptr<printers::Printer> printer;
 		LogLevel minLevelAllowed;
 		std::mutex logMutex;
 

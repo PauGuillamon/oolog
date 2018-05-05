@@ -1,18 +1,18 @@
 
 #include "oolog.h"
-#include "printers/FileLogPrinter.h"
-#include "printers/EndlLogPrinter.h"
-#include "printers/TimestampedLogPrinter.h"
-#include "printers/TypedLogPrinter.h"
+#include "printers/File.h"
+#include "printers/decorators/NewLine.h"
+#include "printers/decorators/Timestamp.h"
+#include "printers/decorators/Level.h"
 
 
 
 int main(){
-    std::shared_ptr<oolog::LogPrinter> logPrinter =
-        std::make_shared<oolog::TypedLogPrinter>(
-        std::make_shared<oolog::TimestampedLogPrinter>(
-        std::make_shared<oolog::EndlLogPrinter>(
-        std::make_shared<oolog::FileLogPrinter>("output.log"))));
+    std::shared_ptr<oolog::printers::Printer> logPrinter =
+        std::make_shared<oolog::printers::decorators::Level>(
+        std::make_shared<oolog::printers::decorators::Timestamp>(
+        std::make_shared<oolog::printers::decorators::NewLine>(
+        std::make_shared<oolog::printers::File>("output.log"))));
 
     oolog::Log log(logPrinter, oolog::LogLevel::Verbose);
 

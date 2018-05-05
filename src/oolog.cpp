@@ -1,5 +1,5 @@
 
-#include "../include/oolog.h"
+#include "oolog.h"
 
 
 
@@ -8,7 +8,7 @@ namespace oolog {
 
 
     
-Log::Log(std::shared_ptr<LogPrinter> logPrinter, LogLevel minLogLevel) :
+Log::Log(std::shared_ptr<printers::Printer> logPrinter, LogLevel minLogLevel) :
     printer(std::move(logPrinter)),
     minLevelAllowed(minLogLevel)
 {
