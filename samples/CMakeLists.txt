@@ -6,4 +6,5 @@ add_subdirectory(002_linked_with_library)
 add_subdirectory(003_printers)
 add_subdirectory(004_thread_safety)
 add_subdirectory(005_log_to_file)
+add_subdirectory(006_log_split_to_cmd_and_file)
 

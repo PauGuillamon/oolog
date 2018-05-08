@@ -30,6 +30,7 @@ set(SOURCES
     printers/decorators/Decorator.cpp
     printers/decorators/Level.cpp
     printers/decorators/NewLine.cpp
+    printers/decorators/Split.cpp
     printers/decorators/Timestamp.cpp
 )
 
