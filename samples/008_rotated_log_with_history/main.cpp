@@ -16,7 +16,7 @@ int main(){
 
     oolog::Log log(logPrinter, oolog::LogLevel::Verbose);
 
-	log.Info("Sample 008 - logging both to console and to a file ------------------");
+	log.Info("Sample 008 - logging to a file that will be rotated with history ------------------");
 	log.Info("hello split log!");
 	log.Warning("bye split log!");
 

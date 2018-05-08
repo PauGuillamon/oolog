@@ -16,7 +16,7 @@ int main(){
 
     oolog::Log log(logPrinter, oolog::LogLevel::Verbose);
 
-	log.Info("Sample 007 - logging both to console and to a file ------------------");
+	log.Info("Sample 007 - logging to a file that will be rotated ------------------");
 	log.Info("hello rotated log!");
 	log.Warning("bye rotated log!");
 
