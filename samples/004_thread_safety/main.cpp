@@ -1,7 +1,6 @@
 
 #include "oolog.h"
 #include "printers/Console.h"
-#include "printers/decorators/Color.h"
 #include "printers/decorators/NewLine.h"
 #include "printers/decorators/Timestamp.h"
 #include "printers/decorators/Level.h"
@@ -25,9 +24,8 @@ int main(){
     std::shared_ptr<oolog::printers::Printer> logPrinter =
         std::make_shared<oolog::printers::decorators::Level>(
         std::make_shared<oolog::printers::decorators::Timestamp>(
-        std::make_shared<oolog::printers::decorators::Color>(
         std::make_shared<oolog::printers::decorators::NewLine>(
-        std::make_shared<oolog::printers::Console>()))));
+        std::make_shared<oolog::printers::Console>())));
 
     oolog::Log log(logPrinter, oolog::LogLevel::Verbose);
 

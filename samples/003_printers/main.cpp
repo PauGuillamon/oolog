@@ -1,10 +1,14 @@
 
 #include "oolog.h"
 #include "printers/Console.h"
-#include "printers/decorators/Color.h"
 #include "printers/decorators/NewLine.h"
 #include "printers/decorators/Timestamp.h"
 #include "printers/decorators/Level.h"
+#if defined _WINDOWS
+	#include "printers/decorators/ColorWin32Console.h"
+#else
+	#include "printers/decorators/ColorANSI.h"
+#endif
 
 
 
@@ -38,7 +42,11 @@ int main(){
     std::shared_ptr<oolog::printers::Printer> logPrinter =
         std::make_shared<oolog::printers::decorators::Level>(
         std::make_shared<oolog::printers::decorators::Timestamp>(
-        std::make_shared<oolog::printers::decorators::Color>(
+#if defined _WINDOWS
+        std::make_shared<oolog::printers::decorators::ColorWin32Console>(
+#else
+        std::make_shared<oolog::printers::decorators::ColorANSI>(
+#endif
         std::make_shared<oolog::printers::decorators::NewLine>(
         std::make_shared<oolog::printers::Console>()))));
 

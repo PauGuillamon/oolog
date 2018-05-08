@@ -27,12 +27,21 @@ set(SOURCES
     printers/Console.cpp
     printers/File.cpp
     printers/Fake.cpp
-    printers/decorators/Color.cpp
     printers/decorators/Decorator.cpp
     printers/decorators/Level.cpp
     printers/decorators/NewLine.cpp
     printers/decorators/Timestamp.cpp
 )
+
+if(MSVC)
+    set(SOURCES ${SOURCES}
+        printers/decorators/ColorWin32Console.cpp
+    )
+else()
+    set(SOURCES ${SOURCES}
+        printers/decorators/ColorANSI.cpp
+    )
+endif()
 
 if(MSVC)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DOOLOG_EXPORTS")

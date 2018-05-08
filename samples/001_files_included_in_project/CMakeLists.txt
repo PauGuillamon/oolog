@@ -15,7 +15,6 @@ set(SOURCES
 	main.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/../../src/oolog.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/../../src/printers/Console.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/../../src/printers/decorators/Color.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/../../src/printers/decorators/Decorator.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/../../src/printers/decorators/NewLine.cpp
 )
