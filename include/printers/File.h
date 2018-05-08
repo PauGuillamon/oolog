@@ -14,7 +14,11 @@ namespace oolog {
 		public:
 			OOLOG_API File(const std::string logFilename);
         
-			virtual void PrintLog(std::string&, LogLevel);
+			virtual void PrintLog(std::string& textToLog, LogLevel logLevel);
+
+	protected:
+		virtual std::ofstream OpenFile(const std::string& fileName);
+		virtual void CloseFile(std::ofstream& logFile);
 
 		private:
 			std::string filename;
