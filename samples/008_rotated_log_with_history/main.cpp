@@ -12,12 +12,14 @@ int main(){
         std::make_shared<oolog::printers::decorators::Level>(
         std::make_shared<oolog::printers::decorators::Timestamp>(
         std::make_shared<oolog::printers::decorators::NewLine>(
-		std::make_shared<oolog::printers::RotatedFileWithHistory>("output_sample_008.log", 94))));
+		std::make_shared<oolog::printers::RotatedFileWithHistory>("output_sample_008.log", 20, 3))));
 
     oolog::Log log(logPrinter, oolog::LogLevel::Verbose);
 
 	log.Info("Sample 008 - logging to a file that will be rotated with history ------------------");
-	log.Info("hello split log!");
+	for(int i = 0; i < 10; i++) {
+		log.Info(i, " meh");
+	}
 	log.Warning("bye split log!");
 
     return 0;
