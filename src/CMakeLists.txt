@@ -28,7 +28,6 @@ set(SOURCES
     printers/File.cpp
     printers/Fake.cpp
     printers/RotatedFile.cpp
-    printers/RotatedFileWithHistory.cpp
     printers/decorators/Decorator.cpp
     printers/decorators/Level.cpp
     printers/decorators/NewLine.cpp
