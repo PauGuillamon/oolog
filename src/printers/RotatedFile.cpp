@@ -63,7 +63,7 @@ namespace oolog {
 		
 		
 		void RotatedFile::RotateToLevel(const std::string& fileName,
-												   unsigned char level)
+										unsigned char level)
 		{
 			std::string previousLevelFile = (level == 1) ? 
 											fileName :
@@ -78,14 +78,14 @@ namespace oolog {
 					RotateToLevel(fileName, level + 1);
 				}
 			}
-			
-			std::rename(previousLevelFile.c_str(), currentLevelFile.c_str());
+
+			RenameFile(previousLevelFile.c_str(), currentLevelFile.c_str());
 		}
 		
 		
 		
 		std::string RotatedFile::ConstructFilename(const std::string& fileName,
-															  unsigned char level)
+													unsigned char level)
 		{
 			std::stringstream stream;
 			stream << fileName << "." << int(level);
@@ -103,6 +103,12 @@ namespace oolog {
 		
 		void RotatedFile::RemoveFile(const std::string& file) {
 			std::remove(file.c_str());
+		}
+		
+		
+		
+		void RotatedFile::RemoveFile(const std::string& currentName, const std::string& newName) {
+			std::rename(currentName.c_str(), newName.c_str());
 		}
 
 	}
