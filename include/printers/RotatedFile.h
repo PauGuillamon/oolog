@@ -16,16 +16,24 @@ namespace oolog {
 
 		};
 
-		class RotatedFile : public File {
+		class RotatedFile : public Printer {
 			public:
 				OOLOG_API RotatedFile(const std::string logFilename,
 									  unsigned long maxSizeInBytes,
 									  unsigned char maxHistoryLevels);
-		
+				
+				virtual void PrintLog(std::string& textToLog, LogLevel logLevel);
+				
 			protected:
-				virtual std::ofstream OpenFile(const std::string& fileName) override;
+				virtual std::ofstream OpenFile(const std::string& fileName);
+				virtual void CloseFile(std::ofstream& logFile);
+				virtual void WriteToFile(std::ofstream& file, const std::string& content);
+				virtual bool FileExists(const std::string& file);
+				virtual void RemoveFile(const std::string& file);
+				virtual void RenameFile(const std::string& currentName, const std::string& newName);
 			
 			private:
+				std::string filename;
 				unsigned long maxSize;
 				unsigned char maxLevels;
 			
@@ -36,9 +44,6 @@ namespace oolog {
 				void RotateToLevel(const std::string& fileName, unsigned char level);
 			
 				std::string ConstructFilename(const std::string& fileName, unsigned char level);
-				bool FileExists(const std::string& file);
-				void RemoveFile(const std::string& file);
-				void RenameFile(const std::string& currentName, const std::string& newName);
 		};
 
 

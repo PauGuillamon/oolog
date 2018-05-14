@@ -11,7 +11,7 @@ namespace oolog {
 		RotatedFile::RotatedFile(const std::string logFilename,
 													   unsigned long maxSizeInBytes,
 													   unsigned char maxHistoryLevels) :
-			File(logFilename),
+			filename(logFilename),
 			maxSize(maxSizeInBytes),
 			maxLevels(maxHistoryLevels)
 		{
@@ -20,9 +20,50 @@ namespace oolog {
 		
 		
 		
+		void RotatedFile::PrintLog(std::string& textToLog, LogLevel logLevel) {
+			ExecuteRotation(filename);
+			
+			std::ofstream logFile = OpenFile(filename);
+			WriteToFile(logFile, textToLog);
+			CloseFile(logFile);
+		}
+		
+		
+		
 		std::ofstream RotatedFile::OpenFile(const std::string& fileName) {
-			ExecuteRotation(fileName);
-			return File::OpenFile(fileName);
+			std::ofstream logFile(fileName, std::ofstream::app);
+			return logFile;
+		}
+
+
+
+		void RotatedFile::CloseFile(std::ofstream& logFile) {
+			logFile.close();
+		}
+		
+		
+		
+		void RotatedFile::WriteToFile(std::ofstream& file, const std::string& content) {
+			file << content;
+		}
+		
+		
+		
+		bool RotatedFile::FileExists(const std::string& file) {
+			std::ifstream fileStream(file.c_str());
+			return fileStream.good();
+		}
+		
+		
+		
+		void RotatedFile::RemoveFile(const std::string& file) {
+			std::remove(file.c_str());
+		}
+		
+		
+		
+		void RotatedFile::RenameFile(const std::string& currentName, const std::string& newName) {
+			std::rename(currentName.c_str(), newName.c_str());
 		}
 		
 		
@@ -90,25 +131,6 @@ namespace oolog {
 			std::stringstream stream;
 			stream << fileName << "." << int(level);
 			return stream.str();
-		}
-		
-		
-		
-		bool RotatedFile::FileExists(const std::string& file) {
-			std::ifstream fileStream(file.c_str());
-			return fileStream.good();
-		}
-		
-		
-		
-		void RotatedFile::RemoveFile(const std::string& file) {
-			std::remove(file.c_str());
-		}
-		
-		
-		
-		void RotatedFile::RemoveFile(const std::string& currentName, const std::string& newName) {
-			std::rename(currentName.c_str(), newName.c_str());
 		}
 
 	}
