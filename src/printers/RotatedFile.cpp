@@ -46,18 +46,32 @@ namespace oolog {
 		void RotatedFile::WriteToFile(std::ofstream& file, const std::string& content) {
 			file << content;
 		}
+
+
+
+		unsigned int RotatedFile::GetFileSize(const std::string& filename) {
+			unsigned long fileSize = 0;
+
+			std::ifstream file(filename, std::ifstream::ate | std::ifstream::binary);
+			std::ifstream::pos_type pos = file.tellg();
+			if (pos > 0) {
+				fileSize = (unsigned long)pos;
+			}
+
+			return fileSize;
+		}
 		
 		
 		
-		bool RotatedFile::FileExists(const std::string& file) {
-			std::ifstream fileStream(file.c_str());
+		bool RotatedFile::FileExists(const std::string& filename) {
+			std::ifstream fileStream(filename.c_str());
 			return fileStream.good();
 		}
 		
 		
 		
-		void RotatedFile::RemoveFile(const std::string& file) {
-			std::remove(file.c_str());
+		void RotatedFile::RemoveFile(const std::string& filename) {
+			std::remove(filename.c_str());
 		}
 		
 		
@@ -77,15 +91,9 @@ namespace oolog {
 		
 		
 		bool RotatedFile::HasMaxSizeBeenReached(const std::string& fileName) {
-			bool maxSizeReached = false;
-			
-			std::ifstream file(fileName, std::ifstream::ate | std::ifstream::binary);
-			std::ifstream::pos_type pos = file.tellg();
-			
-			if(pos > 0) {
-				unsigned long fileSize = pos;
-				maxSizeReached = (fileSize >= maxSize);
-			}
+			unsigned long fileSize = GetFileSize(fileName);
+
+			bool maxSizeReached = (fileSize >= maxSize);
 			
 			return maxSizeReached;
 		}

@@ -3,7 +3,7 @@
 
 
 
-#include "File.h"
+#include "oolog.h"
 
 
 
@@ -28,8 +28,10 @@ namespace oolog {
 				virtual std::ofstream OpenFile(const std::string& fileName);
 				virtual void CloseFile(std::ofstream& logFile);
 				virtual void WriteToFile(std::ofstream& file, const std::string& content);
-				virtual bool FileExists(const std::string& file);
-				virtual void RemoveFile(const std::string& file);
+
+				virtual unsigned int GetFileSize(const std::string& filename);
+				virtual bool FileExists(const std::string& filename);
+				virtual void RemoveFile(const std::string& filename);
 				virtual void RenameFile(const std::string& currentName, const std::string& newName);
 			
 			private:
