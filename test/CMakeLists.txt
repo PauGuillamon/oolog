@@ -64,13 +64,13 @@ if(MSVC)
     target_link_libraries(${PROJECT_NAME} PRIVATE
         debug gtestd optimized gtest
         debug gmockd optimized gmock
-        debug oolog optimized oolog
+        oolog-static
     )
 else()
     target_link_libraries(${PROJECT_NAME} PRIVATE
         gtest
         gmock
-        oolog
+        oolog-static
     )
 endif()
 

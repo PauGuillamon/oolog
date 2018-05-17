@@ -4,40 +4,56 @@
 
 
 #include "oolog.h"
+#include <fstream>
 
 
 
 namespace oolog {
 	namespace printers {
 
-		class Rotate {
-		public:
-			Rotate(unsigned char maxHistoryLevels);
+		class FileInterface {
+			public:
+				FileInterface(const std::string& filename) { }
+				virtual ~FileInterface() {}
 
+				virtual void Open() = 0;
+				virtual void Close() = 0;
+				virtual void Write(const std::string& content) = 0;
+
+			private:
 		};
+
+		class FileManager {
+			public:
+				virtual ~FileManager() {}
+
+				virtual std::shared_ptr<FileInterface> OpenFileToAppend(const std::string& fileName);
+
+				virtual unsigned int GetFileSize(const std::string& filename);
+				virtual bool FileExists(const std::string& filename);
+				virtual void RemoveFile(const std::string& filename);
+				virtual void RenameFile(const std::string& currentName, const std::string& newName);
+		};
+
+
 
 		class RotatedFile : public Printer {
 			public:
 				OOLOG_API RotatedFile(const std::string logFilename,
 									  unsigned long maxSizeInBytes,
 									  unsigned char maxHistoryLevels);
+				OOLOG_API RotatedFile(const std::string logFilename,
+									  unsigned long maxSizeInBytes,
+									  unsigned char maxHistoryLevels,
+									  std::shared_ptr<FileManager> fileSystem);
 				
 				virtual void PrintLog(std::string& textToLog, LogLevel logLevel);
-				
-			protected:
-				virtual std::ofstream OpenFile(const std::string& fileName);
-				virtual void CloseFile(std::ofstream& logFile);
-				virtual void WriteToFile(std::ofstream& file, const std::string& content);
-
-				virtual unsigned int GetFileSize(const std::string& filename);
-				virtual bool FileExists(const std::string& filename);
-				virtual void RemoveFile(const std::string& filename);
-				virtual void RenameFile(const std::string& currentName, const std::string& newName);
 			
 			private:
 				std::string filename;
 				unsigned long maxSize;
 				unsigned char maxLevels;
+				std::shared_ptr<FileManager> fileManager;
 			
 				void ExecuteRotation(const std::string& fileName);
 				bool HasMaxSizeBeenReached(const std::string& fileName);

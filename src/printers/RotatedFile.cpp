@@ -8,48 +8,35 @@
 namespace oolog {
 	namespace printers {
 
-		RotatedFile::RotatedFile(const std::string logFilename,
-													   unsigned long maxSizeInBytes,
-													   unsigned char maxHistoryLevels) :
-			filename(logFilename),
-			maxSize(maxSizeInBytes),
-			maxLevels(maxHistoryLevels)
-		{
-			// Empty
-		}
-		
-		
-		
-		void RotatedFile::PrintLog(std::string& textToLog, LogLevel logLevel) {
-			ExecuteRotation(filename);
-			
-			std::ofstream logFile = OpenFile(filename);
-			WriteToFile(logFile, textToLog);
-			CloseFile(logFile);
-		}
-		
-		
-		
-		std::ofstream RotatedFile::OpenFile(const std::string& fileName) {
-			std::ofstream logFile(fileName, std::ofstream::app);
-			return logFile;
-		}
+		class FileAbstraction : public FileInterface {
+			public:
+				FileAbstraction(const std::string& name) : FileInterface(name), filename(name) { }
+				virtual ~FileAbstraction() {}
 
+				virtual void Open() override {
+					file.open(filename, std::ofstream::app);
+				}
+				virtual void Close() override {
+					if (file.is_open()) {
+						file.close();
+					}
+				}
+				virtual void Write(const std::string& content) override {
+					file << content;
+				}
 
+			private:
+				std::ofstream file;
+				std::string filename;
+		};
 
-		void RotatedFile::CloseFile(std::ofstream& logFile) {
-			logFile.close();
-		}
-		
-		
-		
-		void RotatedFile::WriteToFile(std::ofstream& file, const std::string& content) {
-			file << content;
+		std::shared_ptr<FileInterface> FileManager::OpenFileToAppend(const std::string& fileName) {
+			auto file = std::make_unique<FileAbstraction>(fileName);
+			return file;
 		}
 
 
-
-		unsigned int RotatedFile::GetFileSize(const std::string& filename) {
+		unsigned int FileManager::GetFileSize(const std::string& filename) {
 			unsigned long fileSize = 0;
 
 			std::ifstream file(filename, std::ifstream::ate | std::ifstream::binary);
@@ -60,24 +47,55 @@ namespace oolog {
 
 			return fileSize;
 		}
-		
-		
-		
-		bool RotatedFile::FileExists(const std::string& filename) {
+
+		bool FileManager::FileExists(const std::string& filename) {
 			std::ifstream fileStream(filename.c_str());
 			return fileStream.good();
 		}
-		
-		
-		
-		void RotatedFile::RemoveFile(const std::string& filename) {
+
+		void FileManager::RemoveFile(const std::string& filename) {
 			std::remove(filename.c_str());
+		}
+
+		void FileManager::RenameFile(const std::string& currentName, const std::string& newName) {
+			std::rename(currentName.c_str(), newName.c_str());
+		}
+
+
+
+		RotatedFile::RotatedFile(const std::string logFilename,
+								unsigned long maxSizeInBytes,
+								unsigned char maxHistoryLevels) :
+			RotatedFile(logFilename,
+						maxSizeInBytes,
+						maxHistoryLevels,
+						std::make_shared<FileManager>())
+		{
+			// Empty
+		}
+
+
+
+		RotatedFile::RotatedFile(const std::string logFilename,
+								unsigned long maxSizeInBytes,
+								unsigned char maxHistoryLevels,
+								std::shared_ptr<FileManager> fileSystem) :
+			filename(logFilename),
+			maxSize(maxSizeInBytes),
+			maxLevels(maxHistoryLevels),
+			fileManager(std::move(fileSystem))
+		{
+			// Empty
 		}
 		
 		
 		
-		void RotatedFile::RenameFile(const std::string& currentName, const std::string& newName) {
-			std::rename(currentName.c_str(), newName.c_str());
+		void RotatedFile::PrintLog(std::string& textToLog, LogLevel logLevel) {
+			ExecuteRotation(filename);
+			
+			auto logFile = fileManager->OpenFileToAppend(filename);
+			logFile->Write(textToLog);
+			logFile->Close();
 		}
 		
 		
@@ -91,7 +109,7 @@ namespace oolog {
 		
 		
 		bool RotatedFile::HasMaxSizeBeenReached(const std::string& fileName) {
-			unsigned long fileSize = GetFileSize(fileName);
+			unsigned long fileSize = fileManager->GetFileSize(fileName);
 
 			bool maxSizeReached = (fileSize >= maxSize);
 			
@@ -102,7 +120,7 @@ namespace oolog {
 		
 		void RotatedFile::RotateFile(const std::string& fileName) {
 			if(maxLevels == 0) {
-				RemoveFile(fileName);
+				fileManager->RemoveFile(fileName);
 			}
 			else {
 				RotateToLevel(fileName, 1);
@@ -119,16 +137,16 @@ namespace oolog {
 											ConstructFilename(fileName, level - 1);
 			std::string currentLevelFile = ConstructFilename(fileName, level);
 			
-			if(FileExists(currentLevelFile)) {
+			if(fileManager->FileExists(currentLevelFile)) {
 				if(level == maxLevels) {
-					RemoveFile(currentLevelFile);
+					fileManager->RemoveFile(currentLevelFile);
 				}
 				else if(level < 255) {
 					RotateToLevel(fileName, level + 1);
 				}
 			}
 
-			RenameFile(previousLevelFile.c_str(), currentLevelFile.c_str());
+			fileManager->RenameFile(previousLevelFile.c_str(), currentLevelFile.c_str());
 		}
 		
 		
