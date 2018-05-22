@@ -10,7 +10,6 @@
     - [Available Printers](#available-printers)
     - [Testing code using oolog](#testing-code-using-oolog)
 - [Customization](#customization)
-- [Performance comparison](#performance-comparison)
 - [License](#license)
 
 # Overview
