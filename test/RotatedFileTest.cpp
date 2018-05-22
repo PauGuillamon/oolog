@@ -66,7 +66,7 @@ TEST_F(RotatedFileTest, Test_CheckFileIsOppenedWrittenAndClosed) {
 
 
 
-TEST_F(RotatedFileTest, Test_CheckZZZZZZZZZZ) {
+TEST_F(RotatedFileTest, Test_CheckFileIsWrittenAndClosed) {
 	auto fileAbstraction = std::make_shared<FileAbstractionMock>("not_important.log");
 	auto fileManager = std::make_shared<FileManagerFake>();
 	RotatedFile rotatedFile("file.log", 1024, 4, fileManager);

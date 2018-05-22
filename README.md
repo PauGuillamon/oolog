@@ -28,7 +28,7 @@ Code using this library, will be easy to test and you won't have to worry about 
 # Getting started
 ## Get the code
 ```
-git clone URL // TODO PGJ
+git clone https://github.com/PauGuillamon/oolog.git
 ```
 Once you have the repository, you can [build it](#build) in order to link against a shared or static library, or you can [add the files to your project](#add-files-to-project).
 
@@ -56,6 +56,8 @@ make sample_001     // will only build sample 001
 Add the `src/oolog.cpp` file to your project and add the `include/` folder as include directory.
 
 If you are going to use any of the printers provided by **oolog**, add the printers you need from `src/printers/xxx.cpp` and add the `include/printers/` folder as include directory to your project.
+
+Each printer can also be decorated to add functionality.
 
 ## Quick Start
 Once you have the library in your project, it is as easy to use it as the following code:
@@ -91,6 +93,7 @@ Check the `samples` folder to see more usages of the library.
 # Design
 The library has been designed to be highly customizable. 
 ## Available Printers
+TODO
 ## Testing code using oolog
 oolog integrates perfectly in test suites (whether they are unit tests or integration tests). You only need to provide a Printer that fulfills your requirements in the test suite.
 
@@ -99,8 +102,29 @@ Furthermore, oolog provides a **FakePrinter** that you can use as test double fo
 The FakePrinter is actually used to test oolog itself.
 
 # Customization
+TODO
 
-# Performance comparison
 # License
+MIT License
+
+Copyright (c) 2018 
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 
