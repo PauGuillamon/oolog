@@ -83,3 +83,59 @@ TEST_F(RotatedFileTest, Test_CheckFileIsOpenedWrittenAndClosed) {
 	rotatedFile.PrintLog(textToLog, oolog::LogLevel::Info);
 }
 
+
+
+TEST_F(RotatedFileTest, Test_CheckFileIsRotatedWithExactlyTheGivenSize) {
+	auto fileAbstraction = std::make_shared<FileAbstractionFake>("not_important.log");
+	auto fileManager = std::make_shared<FileManagerFake>();
+	RotatedFile rotatedFile("file.log", 1024, 4, fileManager);
+
+	EXPECT_CALL(*fileManager, RetrieveFile(_)).WillOnce(Return(fileAbstraction));
+	EXPECT_CALL(*fileManager, GetFileSize(_)).WillOnce(Return(1024));
+	EXPECT_CALL(*fileManager, FileExists("file.log.1")).Times(Exactly(1)).WillOnce(Return(false));
+	EXPECT_CALL(*fileManager, RenameFile("file.log", "file.log.1")).Times(Exactly(1));
+
+	std::string textToLog = "text";
+	rotatedFile.PrintLog(textToLog, oolog::LogLevel::Info);
+}
+
+
+
+TEST_F(RotatedFileTest, Test_CheckSecondHistoryLevelIsRenamed) {
+	auto fileAbstraction = std::make_shared<FileAbstractionFake>("not_important.log");
+	auto fileManager = std::make_shared<FileManagerFake>();
+	RotatedFile rotatedFile("file.log", 1024, 4, fileManager);
+
+	EXPECT_CALL(*fileManager, RetrieveFile(_)).WillOnce(Return(fileAbstraction));
+	EXPECT_CALL(*fileManager, GetFileSize(_)).WillOnce(Return(1024));
+	EXPECT_CALL(*fileManager, FileExists("file.log.1")).Times(Exactly(1)).WillOnce(Return(true));
+	EXPECT_CALL(*fileManager, FileExists("file.log.2")).Times(Exactly(1)).WillOnce(Return(false));
+	EXPECT_CALL(*fileManager, RenameFile("file.log.1", "file.log.2")).Times(Exactly(1));
+	EXPECT_CALL(*fileManager, RenameFile("file.log", "file.log.1")).Times(Exactly(1));
+
+	std::string textToLog = "text";
+	rotatedFile.PrintLog(textToLog, oolog::LogLevel::Info);
+}
+
+
+
+TEST_F(RotatedFileTest, Test_CheckMaximumHistoryLevelIsRemoved) {
+	auto fileAbstraction = std::make_shared<FileAbstractionFake>("not_important.log");
+	auto fileManager = std::make_shared<FileManagerFake>();
+	RotatedFile rotatedFile("file.log", 1024, 3, fileManager);
+
+	EXPECT_CALL(*fileManager, RetrieveFile(_)).WillOnce(Return(fileAbstraction));
+	EXPECT_CALL(*fileManager, GetFileSize(_)).WillOnce(Return(1024));
+	EXPECT_CALL(*fileManager, FileExists("file.log.1")).Times(Exactly(1)).WillOnce(Return(true));
+	EXPECT_CALL(*fileManager, FileExists("file.log.2")).Times(Exactly(1)).WillOnce(Return(true));
+	EXPECT_CALL(*fileManager, FileExists("file.log.3")).Times(Exactly(1)).WillOnce(Return(true));
+	
+	EXPECT_CALL(*fileManager, RemoveFile("file.log.3")).Times(Exactly(1));
+	EXPECT_CALL(*fileManager, RenameFile("file.log.1", "file.log.2")).Times(Exactly(1));
+	EXPECT_CALL(*fileManager, RenameFile("file.log.2", "file.log.3")).Times(Exactly(1));
+	EXPECT_CALL(*fileManager, RenameFile("file.log", "file.log.1")).Times(Exactly(1));
+
+	std::string textToLog = "text";
+	rotatedFile.PrintLog(textToLog, oolog::LogLevel::Info);
+}
+
