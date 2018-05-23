@@ -27,7 +27,7 @@ namespace oolog {
 			public:
 				virtual ~FileManager() {}
 
-				virtual std::shared_ptr<FileInterface> OpenFileToAppend(const std::string& fileName);
+				virtual std::shared_ptr<FileInterface> RetrieveFile(const std::string& fileName);
 
 				virtual unsigned int GetFileSize(const std::string& filename);
 				virtual bool FileExists(const std::string& filename);

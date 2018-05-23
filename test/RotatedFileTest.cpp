@@ -23,7 +23,7 @@ class RotatedFileTest : public testing::Test {
 
 class FileManagerFake : public FileManager {
 	public:
-		MOCK_METHOD1(OpenFileToAppend, std::shared_ptr<FileInterface>(const std::string& fileName));
+		MOCK_METHOD1(RetrieveFile, std::shared_ptr<FileInterface>(const std::string& fileName));
 
 		MOCK_METHOD1(GetFileSize, unsigned int(const std::string& filename));
 		MOCK_METHOD1(FileExists, bool(const std::string& filename));
@@ -56,7 +56,7 @@ TEST_F(RotatedFileTest, Test_CheckFileIsOppenedWrittenAndClosed) {
 	auto fileManager = std::make_shared<FileManagerFake>();
 	RotatedFile rotatedFile("file.log", 1024, 4, fileManager);
 
-	EXPECT_CALL(*fileManager, OpenFileToAppend(_)).WillOnce(Return(fileAbstraction));
+	EXPECT_CALL(*fileManager, RetrieveFile(_)).WillOnce(Return(fileAbstraction));
 	EXPECT_CALL(*fileManager, GetFileSize(_)).WillOnce(Return(0));
 	EXPECT_CALL(*fileManager, RemoveFile(_)).Times(Exactly(0));
 
@@ -66,17 +66,18 @@ TEST_F(RotatedFileTest, Test_CheckFileIsOppenedWrittenAndClosed) {
 
 
 
-TEST_F(RotatedFileTest, Test_CheckFileIsWrittenAndClosed) {
+TEST_F(RotatedFileTest, Test_CheckFileIsOpenedWrittenAndClosed) {
 	auto fileAbstraction = std::make_shared<FileAbstractionMock>("not_important.log");
 	auto fileManager = std::make_shared<FileManagerFake>();
 	RotatedFile rotatedFile("file.log", 1024, 4, fileManager);
 
-	EXPECT_CALL(*fileManager, OpenFileToAppend(_)).WillOnce(Return(fileAbstraction));
+	EXPECT_CALL(*fileManager, RetrieveFile(_)).WillOnce(Return(fileAbstraction));
 	EXPECT_CALL(*fileManager, GetFileSize(_)).WillOnce(Return(0));
 	EXPECT_CALL(*fileManager, RemoveFile(_)).Times(Exactly(0));
 
-	EXPECT_CALL(*fileAbstraction, Close()).Times(Exactly(1));
+	EXPECT_CALL(*fileAbstraction, Open()).Times(Exactly(1));
 	EXPECT_CALL(*fileAbstraction, Write(_)).Times(Exactly(1));
+	EXPECT_CALL(*fileAbstraction, Close()).Times(Exactly(1));
 
 	std::string textToLog = "text";
 	rotatedFile.PrintLog(textToLog, oolog::LogLevel::Info);

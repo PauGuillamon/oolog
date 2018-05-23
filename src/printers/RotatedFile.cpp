@@ -11,7 +11,7 @@ namespace oolog {
 		class FileAbstraction : public FileInterface {
 			public:
 				FileAbstraction(const std::string& name) : FileInterface(name), filename(name) { }
-				virtual ~FileAbstraction() {}
+				virtual ~FileAbstraction() { }
 
 				virtual void Open() override {
 					file.open(filename, std::ofstream::app);
@@ -22,7 +22,9 @@ namespace oolog {
 					}
 				}
 				virtual void Write(const std::string& content) override {
-					file << content;
+					if (file.is_open()) {
+						file << content;
+					}
 				}
 
 			private:
@@ -30,8 +32,8 @@ namespace oolog {
 				std::string filename;
 		};
 
-		std::shared_ptr<FileInterface> FileManager::OpenFileToAppend(const std::string& fileName) {
-			auto file = std::make_unique<FileAbstraction>(fileName);
+		std::shared_ptr<FileInterface> FileManager::RetrieveFile(const std::string& fileName) {
+			auto file = std::make_shared<FileAbstraction>(fileName);
 			return file;
 		}
 
@@ -93,7 +95,8 @@ namespace oolog {
 		void RotatedFile::PrintLog(std::string& textToLog, LogLevel logLevel) {
 			ExecuteRotation(filename);
 			
-			auto logFile = fileManager->OpenFileToAppend(filename);
+			auto logFile = fileManager->RetrieveFile(filename);
+			logFile->Open();
 			logFile->Write(textToLog);
 			logFile->Close();
 		}
