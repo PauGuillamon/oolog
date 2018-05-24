@@ -52,8 +52,8 @@ link_directories(${GOOGLE_TEST_INSTALLATION_PATH}/lib)
 
 add_executable(${PROJECT_NAME}
     main.cpp
-    oologTest.cpp
-    RotatedFileTest.cpp
+    LogUnitTest.cpp
+    RotatedFileUnitTest.cpp
 )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
