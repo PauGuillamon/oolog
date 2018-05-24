@@ -1,4 +1,5 @@
 # oolog
+[![Build Status](https://travis-ci.org/PauGuillamon/oolog.svg?branch=master)](https://travis-ci.org/PauGuillamon/oolog)
 ### Table of contents
 - [Overview](#overview)
     - [Why another log library](#why-another-log-library)
