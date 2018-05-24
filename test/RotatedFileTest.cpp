@@ -13,7 +13,7 @@ using ::testing::Exactly;
 
 using namespace oolog::printers;
 
-class RotatedFileTest : public testing::Test {
+class RotatedFileUnitTest : public testing::Test {
 	protected:
 		virtual void SetUp() {}
 		virtual void TearDown() {}
@@ -51,22 +51,8 @@ class FileAbstractionFake : public FileInterface {
 
 
 
-TEST_F(RotatedFileTest, Test_CheckFileIsOppenedWrittenAndClosed) {
-	auto fileAbstraction = std::make_shared<FileAbstractionFake>("not_important.log");
-	auto fileManager = std::make_shared<FileManagerFake>();
-	RotatedFile rotatedFile("file.log", 1024, 4, fileManager);
 
-	EXPECT_CALL(*fileManager, RetrieveFile(_)).WillOnce(Return(fileAbstraction));
-	EXPECT_CALL(*fileManager, GetFileSize(_)).WillOnce(Return(0));
-	EXPECT_CALL(*fileManager, RemoveFile(_)).Times(Exactly(0));
-
-	std::string textToLog = "text";
-	rotatedFile.PrintLog(textToLog, oolog::LogLevel::Info);
-}
-
-
-
-TEST_F(RotatedFileTest, Test_CheckFileIsOpenedWrittenAndClosed) {
+TEST_F(RotatedFileUnitTest, File_is_opened_written_and_closed) {
 	auto fileAbstraction = std::make_shared<FileAbstractionMock>("not_important.log");
 	auto fileManager = std::make_shared<FileManagerFake>();
 	RotatedFile rotatedFile("file.log", 1024, 4, fileManager);
@@ -85,7 +71,23 @@ TEST_F(RotatedFileTest, Test_CheckFileIsOpenedWrittenAndClosed) {
 
 
 
-TEST_F(RotatedFileTest, Test_CheckFileIsRotatedWithExactlyTheGivenSize) {
+TEST_F(RotatedFileUnitTest, File_with_less_size_is_not_rotated) {
+	auto fileAbstraction = std::make_shared<FileAbstractionFake>("not_important.log");
+	auto fileManager = std::make_shared<FileManagerFake>();
+	RotatedFile rotatedFile("file.log", 1024, 4, fileManager);
+
+	EXPECT_CALL(*fileManager, RetrieveFile(_)).WillOnce(Return(fileAbstraction));
+	EXPECT_CALL(*fileManager, GetFileSize(_)).WillOnce(Return(1023));
+	EXPECT_CALL(*fileManager, FileExists("file.log.1")).Times(Exactly(0));
+	EXPECT_CALL(*fileManager, RenameFile(_, _)).Times(Exactly(0));
+
+	std::string textToLog = "text";
+	rotatedFile.PrintLog(textToLog, oolog::LogLevel::Info);
+}
+
+
+
+TEST_F(RotatedFileUnitTest, File_with_exactly_the_given_size_is_rotated) {
 	auto fileAbstraction = std::make_shared<FileAbstractionFake>("not_important.log");
 	auto fileManager = std::make_shared<FileManagerFake>();
 	RotatedFile rotatedFile("file.log", 1024, 4, fileManager);
@@ -101,7 +103,23 @@ TEST_F(RotatedFileTest, Test_CheckFileIsRotatedWithExactlyTheGivenSize) {
 
 
 
-TEST_F(RotatedFileTest, Test_CheckSecondHistoryLevelIsRenamed) {
+TEST_F(RotatedFileUnitTest, File_with_more_size_is_rotated) {
+	auto fileAbstraction = std::make_shared<FileAbstractionFake>("not_important.log");
+	auto fileManager = std::make_shared<FileManagerFake>();
+	RotatedFile rotatedFile("file.log", 1024, 4, fileManager);
+
+	EXPECT_CALL(*fileManager, RetrieveFile(_)).WillOnce(Return(fileAbstraction));
+	EXPECT_CALL(*fileManager, GetFileSize(_)).WillOnce(Return(2048));
+	EXPECT_CALL(*fileManager, FileExists("file.log.1")).Times(Exactly(1)).WillOnce(Return(false));
+	EXPECT_CALL(*fileManager, RenameFile("file.log", "file.log.1")).Times(Exactly(1));
+
+	std::string textToLog = "text";
+	rotatedFile.PrintLog(textToLog, oolog::LogLevel::Info);
+}
+
+
+
+TEST_F(RotatedFileUnitTest, Second_history_level_is_renamed) {
 	auto fileAbstraction = std::make_shared<FileAbstractionFake>("not_important.log");
 	auto fileManager = std::make_shared<FileManagerFake>();
 	RotatedFile rotatedFile("file.log", 1024, 4, fileManager);
@@ -119,7 +137,7 @@ TEST_F(RotatedFileTest, Test_CheckSecondHistoryLevelIsRenamed) {
 
 
 
-TEST_F(RotatedFileTest, Test_CheckMaximumHistoryLevelIsRemoved) {
+TEST_F(RotatedFileUnitTest, Maximum_history_level_is_removed) {
 	auto fileAbstraction = std::make_shared<FileAbstractionFake>("not_important.log");
 	auto fileManager = std::make_shared<FileManagerFake>();
 	RotatedFile rotatedFile("file.log", 1024, 3, fileManager);
@@ -129,7 +147,7 @@ TEST_F(RotatedFileTest, Test_CheckMaximumHistoryLevelIsRemoved) {
 	EXPECT_CALL(*fileManager, FileExists("file.log.1")).Times(Exactly(1)).WillOnce(Return(true));
 	EXPECT_CALL(*fileManager, FileExists("file.log.2")).Times(Exactly(1)).WillOnce(Return(true));
 	EXPECT_CALL(*fileManager, FileExists("file.log.3")).Times(Exactly(1)).WillOnce(Return(true));
-	
+
 	EXPECT_CALL(*fileManager, RemoveFile("file.log.3")).Times(Exactly(1));
 	EXPECT_CALL(*fileManager, RenameFile("file.log.1", "file.log.2")).Times(Exactly(1));
 	EXPECT_CALL(*fileManager, RenameFile("file.log.2", "file.log.3")).Times(Exactly(1));
@@ -139,3 +157,24 @@ TEST_F(RotatedFileTest, Test_CheckMaximumHistoryLevelIsRemoved) {
 	rotatedFile.PrintLog(textToLog, oolog::LogLevel::Info);
 }
 
+
+
+TEST_F(RotatedFileUnitTest, Missing_history_level_stops_rotation) {
+	auto fileAbstraction = std::make_shared<FileAbstractionFake>("not_important.log");
+	auto fileManager = std::make_shared<FileManagerFake>();
+	RotatedFile rotatedFile("file.log", 1024, 3, fileManager);
+
+	EXPECT_CALL(*fileManager, RetrieveFile(_)).WillOnce(Return(fileAbstraction));
+	EXPECT_CALL(*fileManager, GetFileSize(_)).WillOnce(Return(1024));
+	EXPECT_CALL(*fileManager, FileExists("file.log.1")).Times(Exactly(1)).WillOnce(Return(true));
+	EXPECT_CALL(*fileManager, FileExists("file.log.2")).Times(Exactly(1)).WillOnce(Return(false));
+	EXPECT_CALL(*fileManager, FileExists("file.log.3")).Times(Exactly(0));
+
+	EXPECT_CALL(*fileManager, RemoveFile("file.log.3")).Times(Exactly(0));
+	EXPECT_CALL(*fileManager, RenameFile("file.log.1", "file.log.2")).Times(Exactly(1));
+	EXPECT_CALL(*fileManager, RenameFile("file.log.2", "file.log.3")).Times(Exactly(0));
+	EXPECT_CALL(*fileManager, RenameFile("file.log", "file.log.1")).Times(Exactly(1));
+
+	std::string textToLog = "text";
+	rotatedFile.PrintLog(textToLog, oolog::LogLevel::Info);
+}

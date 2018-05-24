@@ -23,7 +23,7 @@ class MockPrinter : public oolog::printers::Fake {
 
 
 
-TEST_F(LogUnitTest, Test_CheckSameLevelIsLogged) {
+TEST_F(LogUnitTest, Same_level_is_logged) {
 	std::shared_ptr<MockPrinter> logPrinter = std::make_shared<MockPrinter>();
 	oolog::Log log(logPrinter, oolog::LogLevel::Warning);
 
@@ -34,7 +34,7 @@ TEST_F(LogUnitTest, Test_CheckSameLevelIsLogged) {
 
 
 
-TEST_F(LogUnitTest, Test_CheckHigherLevelIsLogged) {
+TEST_F(LogUnitTest, Higher_level_is_logged) {
 	std::shared_ptr<MockPrinter> logPrinter = std::make_shared<MockPrinter>();
 	oolog::Log log(logPrinter, oolog::LogLevel::Warning);
 
@@ -45,7 +45,7 @@ TEST_F(LogUnitTest, Test_CheckHigherLevelIsLogged) {
 
 
 
-TEST_F(LogUnitTest, Test_CheckLowerLevelIsNotLogged) {
+TEST_F(LogUnitTest, Lower_level_is_not_logged) {
 	std::shared_ptr<MockPrinter> logPrinter = std::make_shared<MockPrinter>();
 	oolog::Log log(logPrinter, oolog::LogLevel::Warning);
 
@@ -56,7 +56,7 @@ TEST_F(LogUnitTest, Test_CheckLowerLevelIsNotLogged) {
 
 
 
-TEST_F(LogUnitTest, Test_CheckErrorIsLoggedAfterChangingLevel) {
+TEST_F(LogUnitTest, Error_is_logged_after_changing_level) {
 	std::shared_ptr<MockPrinter> logPrinter = std::make_shared<MockPrinter>();
 	oolog::Log log(logPrinter, oolog::LogLevel::Warning);
 
@@ -68,7 +68,7 @@ TEST_F(LogUnitTest, Test_CheckErrorIsLoggedAfterChangingLevel) {
 
 
 
-TEST_F(LogUnitTest, Test_CheckWarningIsNotLoggedAfterChangingLevel) {
+TEST_F(LogUnitTest, Warning_is_not_logged_after_changing_level) {
 	std::shared_ptr<MockPrinter> logPrinter = std::make_shared<MockPrinter>();
 	oolog::Log log(logPrinter, oolog::LogLevel::Warning);
 
