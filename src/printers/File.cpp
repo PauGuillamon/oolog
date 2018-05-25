@@ -17,21 +17,8 @@ namespace oolog {
 
 
 		void File::PrintLog(std::string& textToLog, LogLevel logLevel) {
-			std::ofstream logFile = OpenFile(filename);
+			std::ofstream logFile(filename, std::ofstream::app);
 			logFile << textToLog;
-			CloseFile(logFile);
-		}
-
-
-
-		std::ofstream File::OpenFile(const std::string& fileName) {
-			std::ofstream logFile(fileName, std::ofstream::app);
-			return logFile;
-		}
-
-
-
-		void File::CloseFile(std::ofstream& logFile) {
 			logFile.close();
 		}
 
