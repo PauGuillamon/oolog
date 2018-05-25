@@ -35,8 +35,14 @@ namespace oolog {
 				auto now = std::chrono::system_clock::now();
 				std::time_t time = std::chrono::system_clock::to_time_t(now);
 
+				constexpr int size = 20;
+				char str[size];
+				str[size-1] = '\0';
+				std::strftime(str, size, "%Y/%m/%d %H:%M:%S", std::localtime(&time)); 
+				
 				logStream stream;
-				stream << std::put_time(std::localtime(&time), "%Y/%m/%d %H:%M:%S");
+				stream << str;
+				
 				return stream.str();
 			}
 
