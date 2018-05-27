@@ -217,7 +217,7 @@ Then you only need to provide your Printer to the Log class:
 oolog::Log log(yourCustomPrinter, oolog::LogLevel::Info);
 ```
 
-##Decorators
+## Decorators
 Like Printers, to create your own Decorator you only need to inherit from the Decorator class:
 ```
 class Decorator : public Printer {
