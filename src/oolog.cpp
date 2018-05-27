@@ -8,17 +8,14 @@ namespace oolog {
 
 
     
-Log::Log(std::shared_ptr<printers::Printer> logPrinter, LogLevel minLogLevel) :
+Log::Log(std::shared_ptr<printers::Printer> logPrinter, LogLevel maxLogLevel) :
     printer(std::move(logPrinter)),
-    minLevelAllowed(minLogLevel)
+    maxLevelAllowed(maxLogLevel),
+	debugAllowed(false)
 {
-    // Empty
-}
-
-
-
-Log::~Log() {
-    // Empty
+	if (maxLogLevel == LogLevel::Debug) {
+		throw std::string("oolog doesn't accept oolog::LogLevel::Debug as initialization level.");
+	}
 }
 
 
@@ -26,7 +23,17 @@ Log::~Log() {
 void Log::SetLogLevel(LogLevel newLogLevel) {
 	LockMutex();
 
-	minLevelAllowed = newLogLevel;
+	maxLevelAllowed = newLogLevel;
+
+	UnlockMutex();
+}
+
+
+
+void Log::EnableDebug() {
+	LockMutex();
+
+	debugAllowed = true;
 
 	UnlockMutex();
 }
@@ -47,7 +54,9 @@ void Log::PrintLog(const logStream& stream, LogLevel logLevel) {
 bool Log::LogLevelIsAllowed(LogLevel logLevel) {
 	LockMutex();
 
-	bool isAllowed = (logLevel <= minLevelAllowed);
+	bool isAllowed = (logLevel == LogLevel::Debug) ?
+										debugAllowed :
+										(logLevel <= maxLevelAllowed);
 
 	UnlockMutex();
 	return isAllowed;

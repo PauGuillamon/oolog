@@ -25,24 +25,23 @@ using logStream = std::ostringstream;
 
 
 enum class LogLevel {
-	None,
 	Fatal,
 	Error,
 	Warning,
 	Info,
+	Verbose,
 	Debug,
-	Verbose
 };
 
 
 
 class Log {
 	public:
-		OOLOG_API Log(std::shared_ptr<printers::Printer> logPrinter, LogLevel minLogLevel);
-		OOLOG_API virtual ~Log();
+		OOLOG_API Log(std::shared_ptr<printers::Printer> logPrinter, LogLevel maxLogLevel);
 
 
 		OOLOG_API void SetLogLevel(LogLevel newLogLevel);
+		OOLOG_API void EnableDebug();
 
         
         template<typename... Args>
@@ -83,7 +82,8 @@ class Log {
 		
 	private:        
         std::shared_ptr<printers::Printer> printer;
-		LogLevel minLevelAllowed;
+		LogLevel maxLevelAllowed;
+		bool debugAllowed;
 		std::mutex logMutex;
 
         template<typename T>

@@ -10,8 +10,8 @@ namespace oolog {
 	namespace printers {
 
 		class Printer {
-		public:
-			virtual void PrintLog(std::string&, LogLevel) = 0;
+			public:
+				virtual void PrintLog(std::string&, LogLevel) = 0;
 		};
 
 	}

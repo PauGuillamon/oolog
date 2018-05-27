@@ -3,10 +3,12 @@ cmake_minimum_required(VERSION 3.0)
 
 add_subdirectory(001_files_included_in_project)
 add_subdirectory(002_linked_with_library)
-add_subdirectory(003_printers)
+add_subdirectory(003_decorators)
 add_subdirectory(004_thread_safety)
 add_subdirectory(005_log_to_file)
 add_subdirectory(006_log_split_to_cmd_and_file)
 add_subdirectory(007_rotated_log_without_history)
 add_subdirectory(008_rotated_log_with_history)
+add_subdirectory(009_debug_log)
+add_subdirectory(010_logging_custom_objects)
 
