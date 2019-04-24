@@ -1,8 +1,6 @@
 
 #include "oolog.h"
 
-#include "utils\lock.h";
-
 
 
 namespace oolog {
@@ -22,7 +20,7 @@ Log::Log(std::shared_ptr<printers::Printer> logPrinter, LogLevel maxLogLevel) :
 
 
 void Log::SetLogLevel(LogLevel newLogLevel) {
-	Lock(*logMutex);
+	std::lock_guard<std::mutex> lock(logMutex);
 
 	maxLevelAllowed = newLogLevel;
 }
@@ -30,7 +28,7 @@ void Log::SetLogLevel(LogLevel newLogLevel) {
 
 
 void Log::EnableDebug() {
-	Lock(*logMutex);
+    std::lock_guard<std::mutex> lock(logMutex);
 
 	debugAllowed = true;
 }
@@ -38,7 +36,7 @@ void Log::EnableDebug() {
 
 
 void Log::PrintLog(const logStream& stream, LogLevel logLevel) {
-	Lock(*logMutex);
+    std::lock_guard<std::mutex> lock(logMutex);
 
     std::string textToLog = stream.str();
     printer->PrintLog(textToLog, logLevel);
@@ -47,7 +45,7 @@ void Log::PrintLog(const logStream& stream, LogLevel logLevel) {
 
 
 bool Log::LogLevelIsAllowed(LogLevel logLevel) {
-	Lock(*logMutex);
+    std::lock_guard<std::mutex> lock(logMutex);
 
 	bool isAllowed = (logLevel == LogLevel::Debug) ?
 										debugAllowed :
