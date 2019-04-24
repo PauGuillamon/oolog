@@ -109,9 +109,6 @@ class Log {
 
 		OOLOG_API void PrintLog(const logStream& stream, LogLevel logLevel);
 		OOLOG_API bool LogLevelIsAllowed(LogLevel logLevel);
-
-		void LockMutex();
-		void UnlockMutex();
 };
 
 
