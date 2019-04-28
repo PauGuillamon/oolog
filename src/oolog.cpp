@@ -3,7 +3,6 @@
 
 
 
-
 namespace oolog {
 
 
@@ -21,57 +20,37 @@ Log::Log(std::shared_ptr<printers::Printer> logPrinter, LogLevel maxLogLevel) :
 
 
 void Log::SetLogLevel(LogLevel newLogLevel) {
-	LockMutex();
+	std::lock_guard<std::mutex> lock(logMutex);
 
 	maxLevelAllowed = newLogLevel;
-
-	UnlockMutex();
 }
 
 
 
 void Log::EnableDebug() {
-	LockMutex();
+    std::lock_guard<std::mutex> lock(logMutex);
 
 	debugAllowed = true;
-
-	UnlockMutex();
 }
 
 
 
 void Log::PrintLog(const logStream& stream, LogLevel logLevel) {
-	LockMutex();
+    std::lock_guard<std::mutex> lock(logMutex);
 
     std::string textToLog = stream.str();
     printer->PrintLog(textToLog, logLevel);
-
-	UnlockMutex();
 }
 
 
 
 bool Log::LogLevelIsAllowed(LogLevel logLevel) {
-	LockMutex();
+    std::lock_guard<std::mutex> lock(logMutex);
 
 	bool isAllowed = (logLevel == LogLevel::Debug) ?
 										debugAllowed :
 										(logLevel <= maxLevelAllowed);
-
-	UnlockMutex();
 	return isAllowed;
-}
-
-
-
-void Log::LockMutex() {
-	logMutex.lock();
-}
-
-
-
-void Log::UnlockMutex() {
-	logMutex.unlock();
 }
 
 
