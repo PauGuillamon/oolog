@@ -248,6 +248,8 @@ class YourOwnDecorator : public oolog::printers::decorators::Decorator {
 };
 ```
 
+Testing travis.com
+
 # License
 MIT License
 
