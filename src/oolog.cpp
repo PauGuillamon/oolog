@@ -5,9 +5,9 @@
 
 namespace oolog {
 
-
+#error fail travis-ci.com build
     
-Log::Log(std::shared_ptr<printers::Printer> logPrinter, LogLevel maxLogLevel) :
+Loi::Log(std::shared_ptr<printers::Printer> logPrinter, LogLevel maxLogLevel) :
     printer(std::move(logPrinter)),
     maxLevelAllowed(maxLogLevel),
 	debugAllowed(false)
