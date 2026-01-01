@@ -22,15 +22,14 @@ namespace oolog {
 
 			void ColorANSI::SetColor(std::string& textToLog, const LogLevel logLevel) {
 				logStream stream;
-				stream << "\033[1;";
 				switch (logLevel) {
-				case LogLevel::Fatal:		stream << "31m";	break;
-				case LogLevel::Error:		stream << "31m";	break;
-				case LogLevel::Warning:		stream << "33m";	break;
-				case LogLevel::Info:		stream << "34m";	break;
-				case LogLevel::Debug:		stream << "32m";	break;
-				case LogLevel::Verbose:		stream << "30m";	break;
-				default:										break;
+				case LogLevel::Fatal:		stream << "\033[1;31m";	break;
+				case LogLevel::Error:		stream << "\033[1;31m";	break;
+				case LogLevel::Warning:		stream << "\033[1;33m";	break;
+				case LogLevel::Info:		stream << "\033[1;34m";	break;
+				case LogLevel::Debug:		stream << "\033[1;32m";	break;
+				case LogLevel::Verbose:		stream << "";			break;
+				default:											break;
 				}
 				textToLog.insert(0, stream.str());
 
