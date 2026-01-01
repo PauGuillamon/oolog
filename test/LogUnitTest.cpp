@@ -5,6 +5,7 @@
 
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include <stdexcept>
 
 using ::testing::Exactly;
 
@@ -106,6 +107,6 @@ TEST_F(LogUnitTest, Debug_is_logged_if_enabled) {
 TEST_F(LogUnitTest, Exception_is_thrown_if_initialized_in_debug_level) {
 	std::shared_ptr<MockPrinter> logPrinter = std::make_shared<MockPrinter>();
 	
-	EXPECT_THROW(oolog::Log log(logPrinter, oolog::LogLevel::Debug), std::string);
+	EXPECT_THROW(oolog::Log log(logPrinter, oolog::LogLevel::Debug), std::runtime_error);
 }
 

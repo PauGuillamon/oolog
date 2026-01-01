@@ -1,6 +1,7 @@
 
 #include "oolog.h"
 
+#include <stdexcept>
 
 
 namespace oolog {
@@ -13,7 +14,10 @@ Log::Log(std::shared_ptr<printers::Printer> logPrinter, LogLevel maxLogLevel) :
 	debugAllowed(false)
 {
 	if (maxLogLevel == LogLevel::Debug) {
-		throw std::string("oolog doesn't accept oolog::LogLevel::Debug as initialization level.");
+		const std::string errorMessage = "oolog doesn't accept oolog::LogLevel::Debug as initialization level. "
+											 "Use oolog::Log::EnableDebug() to allow debug logs.";
+		std::cerr << errorMessage << std::endl;
+		throw std::runtime_error(errorMessage);
 	}
 }
 
