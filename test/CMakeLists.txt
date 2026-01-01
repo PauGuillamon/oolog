@@ -33,7 +33,7 @@ set(cmake_googleTest_args -DCMAKE_INSTALL_PREFIX=${GOOGLE_TEST_INSTALLATION_PATH
 
 ExternalProject_Add(${GOOGLE_TEST}
 GIT_REPOSITORY "https://github.com/google/googletest.git"
-GIT_TAG "master"
+GIT_TAG "release-1.11.0"
 CMAKE_ARGS ${cmake_googleTest_args} ${cmake_global_args}
 PREFIX "${GOOGLE_TEST_PATH}"
 )
