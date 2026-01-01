@@ -27,5 +27,5 @@ endif()
 
 if (BUILD_TESTS)
     enable_testing()
-    add_test(oologTest ${CMAKE_BINARY_DIR}/bin/test/oologTest)
+    add_test(oologTest ${CMAKE_BINARY_DIR}/bin/oologTest)
 endif()
