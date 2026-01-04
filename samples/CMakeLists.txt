@@ -1,5 +1,5 @@
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.30)
 
 add_subdirectory(001_files_included_in_project)
 add_subdirectory(002_linked_with_library)
