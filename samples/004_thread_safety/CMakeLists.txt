@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.30)
 
 project(sample_004)
 
-set (CMAKE_CXX_STANDARD 11)
-
 find_package(Threads REQUIRED)
 
 if(UNIX)
@@ -26,4 +24,5 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} oolog-static)
 
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
 
