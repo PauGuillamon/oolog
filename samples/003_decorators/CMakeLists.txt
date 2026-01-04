@@ -15,6 +15,6 @@ set(SOURCES
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME} oolog)
+target_link_libraries(${PROJECT_NAME} oolog-static)
 
 
