@@ -1,7 +1,8 @@
 #ifndef COLOR_ANSI_PRINTER_DECORATOR_H_
 #define COLOR_ANSI_PRINTER_DECORATOR_H_
 
-
+#include <memory>
+#include <string>
 
 #include "oolog.h"
 #include "printers/decorators/Decorator.h"
