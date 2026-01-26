@@ -1,11 +1,9 @@
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.30)
 
 include(ExternalProject)
 
 project(oologTest)
-
-set(CMAKE_CXX_STANDARD 11)
 
 find_package(Threads REQUIRED)
 
@@ -55,6 +53,8 @@ add_executable(${PROJECT_NAME}
     LogUnitTest.cpp
     RotatedFileUnitTest.cpp
 )
+
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
 

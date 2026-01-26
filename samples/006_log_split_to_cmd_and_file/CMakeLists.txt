@@ -1,9 +1,7 @@
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.30)
 
 project(sample_006)
-
-set (CMAKE_CXX_STANDARD 11)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../include)
 
@@ -14,6 +12,7 @@ set(SOURCES
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME} oolog)
+target_link_libraries(${PROJECT_NAME} oolog-static)
 
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
 

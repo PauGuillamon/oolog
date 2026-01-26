@@ -1,9 +1,7 @@
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.30)
 
 project(sample_001)
-
-set (CMAKE_CXX_STANDARD 11)
 
 
 include_directories(
@@ -19,4 +17,6 @@ set(SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/../../src/printers/decorators/NewLine.cpp
 )
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
 

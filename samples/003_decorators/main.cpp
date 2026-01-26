@@ -52,6 +52,7 @@ int main(){
 
 
     oolog::Log log(logPrinter, oolog::LogLevel::Verbose);
+    log.EnableDebug();
 
     RunApp(log);
 
